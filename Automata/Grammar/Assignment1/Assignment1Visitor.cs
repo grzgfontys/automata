@@ -33,6 +33,12 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IAssignment1Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="Assignment1Parser.file"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFile([NotNull] Assignment1Parser.FileContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="Assignment1Parser.human"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

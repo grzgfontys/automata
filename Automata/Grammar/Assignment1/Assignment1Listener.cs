@@ -32,6 +32,16 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IAssignment1Listener : IParseTreeListener {
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="Assignment1Parser.file"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFile([NotNull] Assignment1Parser.FileContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="Assignment1Parser.file"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFile([NotNull] Assignment1Parser.FileContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="Assignment1Parser.human"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

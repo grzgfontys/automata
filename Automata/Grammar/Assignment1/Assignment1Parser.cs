@@ -39,9 +39,9 @@ public partial class Assignment1Parser : Parser {
 	public const int
 		NAME=1, AGE=2, TEL=3, SEMICOLON=4, WHITESPACE=5, NEWLINE=6;
 	public const int
-		RULE_human = 0, RULE_fullName = 1, RULE_nameAge = 2, RULE_nameTel = 3;
+		RULE_file = 0, RULE_human = 1, RULE_fullName = 2, RULE_nameAge = 3, RULE_nameTel = 4;
 	public static readonly string[] ruleNames = {
-		"human", "fullName", "nameAge", "nameTel"
+		"file", "human", "fullName", "nameAge", "nameTel"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -82,25 +82,83 @@ public partial class Assignment1Parser : Parser {
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
-	public partial class HumanContext : ParserRuleContext {
+	public partial class FileContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(Assignment1Parser.Eof, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext[] fullName() {
-			return GetRuleContexts<FullNameContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public HumanContext[] human() {
+			return GetRuleContexts<HumanContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext fullName(int i) {
-			return GetRuleContext<FullNameContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public HumanContext human(int i) {
+			return GetRuleContext<HumanContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public NameAgeContext[] nameAge() {
-			return GetRuleContexts<NameAgeContext>();
+		public FileContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public NameAgeContext nameAge(int i) {
-			return GetRuleContext<NameAgeContext>(i);
+		public override int RuleIndex { get { return RULE_file; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IAssignment1Listener typedListener = listener as IAssignment1Listener;
+			if (typedListener != null) typedListener.EnterFile(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public NameTelContext[] nameTel() {
-			return GetRuleContexts<NameTelContext>();
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IAssignment1Listener typedListener = listener as IAssignment1Listener;
+			if (typedListener != null) typedListener.ExitFile(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public NameTelContext nameTel(int i) {
-			return GetRuleContext<NameTelContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAssignment1Visitor<TResult> typedVisitor = visitor as IAssignment1Visitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFile(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public FileContext file() {
+		FileContext _localctx = new FileContext(Context, State);
+		EnterRule(_localctx, 0, RULE_file);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 13;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==NAME) {
+				{
+				{
+				State = 10;
+				human();
+				}
+				}
+				State = 15;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 16;
+			Match(Eof);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class HumanContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public FullNameContext fullName() {
+			return GetRuleContext<FullNameContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public NameAgeContext nameAge() {
+			return GetRuleContext<NameAgeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public NameTelContext nameTel() {
+			return GetRuleContext<NameTelContext>(0);
 		}
 		public HumanContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -128,45 +186,32 @@ public partial class Assignment1Parser : Parser {
 	[RuleVersion(0)]
 	public HumanContext human() {
 		HumanContext _localctx = new HumanContext(Context, State);
-		EnterRule(_localctx, 0, RULE_human);
-		int _la;
+		EnterRule(_localctx, 2, RULE_human);
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 11;
+			State = 21;
 			ErrorHandler.Sync(this);
-			_la = TokenStream.LA(1);
-			do {
+			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
 				{
-				State = 11;
-				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,0,Context) ) {
-				case 1:
-					{
-					State = 8;
-					fullName();
-					}
-					break;
-				case 2:
-					{
-					State = 9;
-					nameAge();
-					}
-					break;
-				case 3:
-					{
-					State = 10;
-					nameTel();
-					}
-					break;
+				State = 18;
+				fullName();
 				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 19;
+				nameAge();
 				}
-				State = 13;
-				ErrorHandler.Sync(this);
-				_la = TokenStream.LA(1);
-			} while ( _la==NAME );
-			State = 15;
-			Match(Eof);
+				break;
+			case 3:
+				EnterOuterAlt(_localctx, 3);
+				{
+				State = 20;
+				nameTel();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -213,17 +258,17 @@ public partial class Assignment1Parser : Parser {
 	[RuleVersion(0)]
 	public FullNameContext fullName() {
 		FullNameContext _localctx = new FullNameContext(Context, State);
-		EnterRule(_localctx, 2, RULE_fullName);
+		EnterRule(_localctx, 4, RULE_fullName);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 17;
+			State = 23;
 			Match(NAME);
-			State = 18;
+			State = 24;
 			Match(WHITESPACE);
-			State = 19;
+			State = 25;
 			Match(NAME);
-			State = 20;
+			State = 26;
 			Match(SEMICOLON);
 			}
 		}
@@ -269,17 +314,17 @@ public partial class Assignment1Parser : Parser {
 	[RuleVersion(0)]
 	public NameAgeContext nameAge() {
 		NameAgeContext _localctx = new NameAgeContext(Context, State);
-		EnterRule(_localctx, 4, RULE_nameAge);
+		EnterRule(_localctx, 6, RULE_nameAge);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 22;
+			State = 28;
 			Match(NAME);
-			State = 23;
+			State = 29;
 			Match(WHITESPACE);
-			State = 24;
+			State = 30;
 			Match(AGE);
-			State = 25;
+			State = 31;
 			Match(SEMICOLON);
 			}
 		}
@@ -325,17 +370,17 @@ public partial class Assignment1Parser : Parser {
 	[RuleVersion(0)]
 	public NameTelContext nameTel() {
 		NameTelContext _localctx = new NameTelContext(Context, State);
-		EnterRule(_localctx, 6, RULE_nameTel);
+		EnterRule(_localctx, 8, RULE_nameTel);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 27;
+			State = 33;
 			Match(NAME);
-			State = 28;
+			State = 34;
 			Match(WHITESPACE);
-			State = 29;
+			State = 35;
 			Match(TEL);
-			State = 30;
+			State = 36;
 			Match(SEMICOLON);
 			}
 		}
@@ -351,15 +396,16 @@ public partial class Assignment1Parser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,6,33,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,1,0,1,0,1,0,4,0,12,8,0,11,0,12,
-		0,13,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,1,
-		3,1,3,0,0,4,0,2,4,6,0,0,31,0,11,1,0,0,0,2,17,1,0,0,0,4,22,1,0,0,0,6,27,
-		1,0,0,0,8,12,3,2,1,0,9,12,3,4,2,0,10,12,3,6,3,0,11,8,1,0,0,0,11,9,1,0,
-		0,0,11,10,1,0,0,0,12,13,1,0,0,0,13,11,1,0,0,0,13,14,1,0,0,0,14,15,1,0,
-		0,0,15,16,5,0,0,1,16,1,1,0,0,0,17,18,5,1,0,0,18,19,5,5,0,0,19,20,5,1,0,
-		0,20,21,5,4,0,0,21,3,1,0,0,0,22,23,5,1,0,0,23,24,5,5,0,0,24,25,5,2,0,0,
-		25,26,5,4,0,0,26,5,1,0,0,0,27,28,5,1,0,0,28,29,5,5,0,0,29,30,5,3,0,0,30,
-		31,5,4,0,0,31,7,1,0,0,0,2,11,13
+		4,1,6,39,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,5,0,12,8,0,10,0,12,
+		0,15,9,0,1,0,1,0,1,1,1,1,1,1,3,1,22,8,1,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,
+		3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,0,0,5,0,2,4,6,8,0,0,36,0,13,1,0,0,0,
+		2,21,1,0,0,0,4,23,1,0,0,0,6,28,1,0,0,0,8,33,1,0,0,0,10,12,3,2,1,0,11,10,
+		1,0,0,0,12,15,1,0,0,0,13,11,1,0,0,0,13,14,1,0,0,0,14,16,1,0,0,0,15,13,
+		1,0,0,0,16,17,5,0,0,1,17,1,1,0,0,0,18,22,3,4,2,0,19,22,3,6,3,0,20,22,3,
+		8,4,0,21,18,1,0,0,0,21,19,1,0,0,0,21,20,1,0,0,0,22,3,1,0,0,0,23,24,5,1,
+		0,0,24,25,5,5,0,0,25,26,5,1,0,0,26,27,5,4,0,0,27,5,1,0,0,0,28,29,5,1,0,
+		0,29,30,5,5,0,0,30,31,5,2,0,0,31,32,5,4,0,0,32,7,1,0,0,0,33,34,5,1,0,0,
+		34,35,5,5,0,0,35,36,5,3,0,0,36,37,5,4,0,0,37,9,1,0,0,0,2,13,21
 	};
 
 	public static readonly ATN _ATN =

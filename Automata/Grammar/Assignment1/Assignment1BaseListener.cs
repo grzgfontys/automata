@@ -37,6 +37,18 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class Assignment1BaseListener : IAssignment1Listener {
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="Assignment1Parser.file"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFile([NotNull] Assignment1Parser.FileContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="Assignment1Parser.file"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFile([NotNull] Assignment1Parser.FileContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="Assignment1Parser.human"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

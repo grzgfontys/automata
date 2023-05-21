@@ -1,7 +1,8 @@
 grammar Assignment1;
 
 // Parser Rules
-human               : (fullName | nameAge | nameTel)+ EOF;
+file                : human* EOF;
+human               : fullName | nameAge | nameTel;
 fullName            : NAME WHITESPACE NAME SEMICOLON; // match keyword hello followed by an identifier
 nameAge             : NAME WHITESPACE AGE SEMICOLON; // match keyword hello followed by an identifier
 nameTel             : NAME WHITESPACE TEL SEMICOLON; // match keyword hello followed by an identifier
