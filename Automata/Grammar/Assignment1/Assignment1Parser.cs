@@ -117,6 +117,12 @@ public partial class Assignment1Parser : Parser {
 			IAssignment1Listener typedListener = listener as IAssignment1Listener;
 			if (typedListener != null) typedListener.ExitHuman(this);
 		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAssignment1Visitor<TResult> typedVisitor = visitor as IAssignment1Visitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitHuman(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -196,6 +202,12 @@ public partial class Assignment1Parser : Parser {
 			IAssignment1Listener typedListener = listener as IAssignment1Listener;
 			if (typedListener != null) typedListener.ExitFullName(this);
 		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAssignment1Visitor<TResult> typedVisitor = visitor as IAssignment1Visitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFullName(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -246,6 +258,12 @@ public partial class Assignment1Parser : Parser {
 			IAssignment1Listener typedListener = listener as IAssignment1Listener;
 			if (typedListener != null) typedListener.ExitNameAge(this);
 		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAssignment1Visitor<TResult> typedVisitor = visitor as IAssignment1Visitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitNameAge(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -295,6 +313,12 @@ public partial class Assignment1Parser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IAssignment1Listener typedListener = listener as IAssignment1Listener;
 			if (typedListener != null) typedListener.ExitNameTel(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAssignment1Visitor<TResult> typedVisitor = visitor as IAssignment1Visitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitNameTel(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
