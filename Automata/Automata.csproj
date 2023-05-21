@@ -14,6 +14,9 @@
     <ItemGroup>
         <None Remove="$(RootDir)\**\*.tokens"/>
         <None Remove="$(RootDir)\**\*.interp"/>
+        <None Update="test.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

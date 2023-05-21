@@ -1,0 +1,4 @@
+Jakub Pawlak;
+Grzegorz 21;
+John +321234;
+Not a valid person;
