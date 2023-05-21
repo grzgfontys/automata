@@ -2,10 +2,10 @@ using Grammar.Assignment1;
 
 namespace Automata.Parsing;
 
-public class FileVisotor : Assignment1BaseVisitor<IEnumerable<Human>>
+public class FileVisitor : Assignment1BaseVisitor<IEnumerable<Human>>
 {
 	private readonly HumanVisitor humanVisitor = new();
 
 	public override IEnumerable<Human> VisitFile(Assignment1Parser.FileContext context) =>
-		from human in context.human() select humanVisitor.VisitHuman(human);
+		context.human().Select(humanVisitor.VisitHuman).Where(h => h is not null).Cast<Human>();
 }

@@ -18,7 +18,7 @@ public static class Program
 		var parser = new Assignment1Parser(tokens);
 
 		IParseTree tree = parser.file();
-		FileVisotor visitor = new();
+		FileVisitor visitor = new();
 
 		var result = visitor.Visit(tree) ?? Enumerable.Empty<Human>();
 		foreach ( Human human in result )

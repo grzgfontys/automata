@@ -4,7 +4,7 @@ namespace Automata.Parsing;
 
 public record Human(string Name, int? Age, string? Telephone);
 
-public class HumanVisitor : Assignment1BaseVisitor<Human>
+public class HumanVisitor : Assignment1BaseVisitor<Human?>
 {
 	public override Human VisitFullName(Assignment1Parser.FullNameContext context)
 	{
