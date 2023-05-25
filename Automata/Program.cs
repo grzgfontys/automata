@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using Automata.Parsing;
+using Automata.Parsing.Human;
 using Grammar.Assignment1;
 
 namespace Automata;

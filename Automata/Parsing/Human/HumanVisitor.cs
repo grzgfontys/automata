@@ -1,6 +1,6 @@
 using Grammar.Assignment1;
 
-namespace Automata.Parsing;
+namespace Automata.Parsing.Human;
 
 public record Human(string Name, int? Age, string? Telephone);
 

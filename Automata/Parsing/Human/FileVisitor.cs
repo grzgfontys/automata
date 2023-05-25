@@ -1,6 +1,6 @@
 using Grammar.Assignment1;
 
-namespace Automata.Parsing;
+namespace Automata.Parsing.Human;
 
 public class FileVisitor : Assignment1BaseVisitor<IEnumerable<Human>>
 {
