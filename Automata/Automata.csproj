@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="$(RootDir)\**\*.tokens" />
-        <None Remove="$(RootDir)\**\*.interp" />
+        <None Remove="./**/*.tokens" />
+        <None Remove="./**/*.interp" />
         <None Update="test.txt">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
