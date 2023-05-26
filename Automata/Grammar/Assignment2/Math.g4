@@ -10,8 +10,8 @@ DIV         : '/';
 WHITESPACE  : [ \t\n\r]+ -> skip;
 
 expression 
-    : NUMBER
-    | expression (MULT|DIV) expression
-    | expression (PLUS|MINUS) expression
-    | OPENPAREN expression CLOSEPAREN
+    : NUMBER                                #number
+    | expression (MULT|DIV) expression      #multiplication
+    | expression (PLUS|MINUS) expression    #addition
+    | OPENPAREN expression CLOSEPAREN       #parenthesized
     ;
