@@ -1,17 +1,17 @@
 grammar Math;
 
-NUMBER      : [1-9][0-9]*;
-OPENPAREN   : '(';
-CLOSEPAREN  : ')';
-PLUS        : '+';
-MINUS       : '-';
-MULT        : '*';
-DIV         : '/';
+expression 
+    : NUMBER                                 #Literal
+    | expression op=('*'|'/') expression     #MultiplicationDivision
+    | expression op=('+'|'-') expression     #AdditionSubtraction
+    | '(' expression ')'                     #ParenthesizedExpression
+    ;
+
+
+
+NUMBER      : NONZERO_DIGIT DIGIT*;
 WHITESPACE  : [ \t\n\r]+ -> skip;
 
-expression 
-    : NUMBER                                    #Literal
-    | expression op=(MULT|DIV) expression       #MultiplicationDivision
-    | expression op=(PLUS|MINUS) expression     #AdditionSubtraction
-    | OPENPAREN expression CLOSEPAREN           #ParenthesizedExpression
-    ;
+fragment NONZERO_DIGIT : [1-9];
+fragment ZERO : '0';
+fragment DIGIT: ZERO | NONZERO_DIGIT;
