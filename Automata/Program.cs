@@ -1,29 +1,27 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Automata.Parsing.Human;
+using Automata.Parsing.Math;
 using Grammar.Assignment1;
+using Grammar.Assignment2;
 
 namespace Automata;
 
 public static class Program
 {
-	private const string FilePath = "test.txt";
+	private const string Expression = "3 * (1 + 3)";
 
 	public static void Main(string[] args)
 	{
-		using FileStream file = File.OpenRead(FilePath);
-		ICharStream stream = CharStreams.fromStream(file);
-		ITokenSource lexer = new Assignment1Lexer(stream);
+		ICharStream stream = CharStreams.fromString(Expression);
+		ITokenSource lexer = new MathLexer(stream);
 		ITokenStream tokens = new CommonTokenStream(lexer);
-		var parser = new Assignment1Parser(tokens);
+		var parser = new MathParser(tokens);
 
-		IParseTree tree = parser.file();
-		FileVisitor visitor = new();
+		IParseTree tree = parser.expression();
+		MathVisitor visitor = new();
 
-		var result = visitor.Visit(tree) ?? Enumerable.Empty<Human>();
-		foreach ( Human human in result )
-		{
-			Console.WriteLine(human);
-		}
+		var result = visitor.Visit(tree);
+		Console.WriteLine($"{Expression} = {result}");
 	}
 }
