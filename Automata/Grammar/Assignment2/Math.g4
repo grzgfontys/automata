@@ -2,8 +2,8 @@ grammar Math;
 
 expression 
     : NUMBER                                 #Literal
-    | expression op=('*'|'/') expression     #MultiplicationDivision
-    | expression op=('+'|'-') expression     #AdditionSubtraction
+    | expression op=('*'|'/') expression     #BinaryOperation
+    | expression op=('+'|'-') expression     #BinaryOperation
     | '(' expression ')'                     #ParenthesizedExpression
     ;
 
