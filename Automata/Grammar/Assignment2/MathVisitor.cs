@@ -33,10 +33,32 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IMathVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MathParser.expression"/>.
+	/// Visit a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression([NotNull] MathParser.ExpressionContext context);
+	Result VisitNumber([NotNull] MathParser.NumberContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>parenthesized</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParenthesized([NotNull] MathParser.ParenthesizedContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>multiplication</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiplication([NotNull] MathParser.MultiplicationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>addition</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAddition([NotNull] MathParser.AdditionContext context);
 }
 } // namespace Grammar.Assignment2

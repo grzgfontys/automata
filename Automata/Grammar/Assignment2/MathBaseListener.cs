@@ -37,17 +37,61 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MathBaseListener : IMathListener {
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MathParser.expression"/>.
+	/// Enter a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpression([NotNull] MathParser.ExpressionContext context) { }
+	public virtual void EnterNumber([NotNull] MathParser.NumberContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="MathParser.expression"/>.
+	/// Exit a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpression([NotNull] MathParser.ExpressionContext context) { }
+	public virtual void ExitNumber([NotNull] MathParser.NumberContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>parenthesized</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParenthesized([NotNull] MathParser.ParenthesizedContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>parenthesized</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParenthesized([NotNull] MathParser.ParenthesizedContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>multiplication</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMultiplication([NotNull] MathParser.MultiplicationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>multiplication</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMultiplication([NotNull] MathParser.MultiplicationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>addition</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAddition([NotNull] MathParser.AdditionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>addition</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAddition([NotNull] MathParser.AdditionContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

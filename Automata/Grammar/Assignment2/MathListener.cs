@@ -32,14 +32,52 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IMathListener : IParseTreeListener {
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="MathParser.expression"/>.
+	/// Enter a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExpression([NotNull] MathParser.ExpressionContext context);
+	void EnterNumber([NotNull] MathParser.NumberContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="MathParser.expression"/>.
+	/// Exit a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExpression([NotNull] MathParser.ExpressionContext context);
+	void ExitNumber([NotNull] MathParser.NumberContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>parenthesized</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParenthesized([NotNull] MathParser.ParenthesizedContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>parenthesized</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParenthesized([NotNull] MathParser.ParenthesizedContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>multiplication</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMultiplication([NotNull] MathParser.MultiplicationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>multiplication</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMultiplication([NotNull] MathParser.MultiplicationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>addition</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAddition([NotNull] MathParser.AdditionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>addition</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAddition([NotNull] MathParser.AdditionContext context);
 }
 } // namespace Grammar.Assignment2
