@@ -27,44 +27,23 @@ public class MathListener : MathBaseListener
 		values[context] = result;
 	}
 
-	public override void ExitAdditionSubtraction(MathParser.AdditionSubtractionContext context)
+	public override void ExitBinaryOperation(MathParser.BinaryOperationContext context)
 	{
+		const string powerOperator = "^";
+		
 		int lhs = values[context.expression(0)];
 		int rhs = values[context.expression(1)];
-		int result = BinaryOpImpl(lhs, rhs, context.op.Text);
-		values[context] = result;
-	}
-
-	public override void ExitMultiplicationDivision(MathParser.MultiplicationDivisionContext context)
-	{
-		int lhs = values[context.expression(0)];
-		int rhs = values[context.expression(1)];
-		int result = BinaryOpImpl(lhs, rhs, context.op.Text);
-		values[context] = result;
-	}
-
-	public override void ExitPower(MathParser.PowerContext context)
-	{
-		int lhs = values[context.expression(0)];
-		int rhs = values[context.expression(1)];
-		int result = BinaryOpImpl(lhs, rhs, PowerOperator);
-		values[context] = result;
-	}
-
-	private static int Factorial(int n) => Enumerable.Range(1, n).Aggregate(1, (acc, i) => acc * i);
-
-	private const string PowerOperator = "^";
-
-	private static int BinaryOpImpl(int lhs, int rhs, string op)
-	{
-		return op switch
+		string op = context.op.Text;
+		values[context] = op switch
 		       {
 			       "+"           => lhs + rhs,
 			       "-"           => lhs - rhs,
 			       "*"           => lhs * rhs,
 			       "/"           => lhs / rhs,
-			       PowerOperator => (int) Pow(lhs, rhs),
+			       powerOperator => (int) Pow(lhs, rhs),
 			       _             => throw new ArgumentException($"Unknown binary operator {op}")
 		       };
 	}
+
+	private static int Factorial(int n) => Enumerable.Range(1, n).Aggregate(1, (acc, i) => acc * i);
 }

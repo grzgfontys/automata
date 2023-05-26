@@ -1,5 +1,5 @@
-using Antlr4.Runtime;
 using Grammar.Assignment2;
+using static System.Math;
 
 namespace Automata.Parsing.Math;
 
@@ -10,31 +10,25 @@ public class MathVisitor : MathBaseVisitor<int>
 
 	public override int VisitLiteral(MathParser.LiteralContext context) => int.Parse(context.GetText());
 
-	public override int VisitAdditionSubtraction(MathParser.AdditionSubtractionContext context)
+	public override int VisitFactorial(MathParser.FactorialContext context) => Factorial(Visit(context.expression()));
+
+	private static int Factorial(int n) => Enumerable.Range(1, n).Aggregate(1, (acc, i) => acc * i);
+
+	public override int VisitBinaryOperation(MathParser.BinaryOperationContext context)
 	{
+		const string powerOperator = "^";
+
 		int lhs = Visit(context.expression(0));
 		int rhs = Visit(context.expression(1));
 		string op = context.op.Text;
-		return BinaryOpImpl(lhs, rhs, op);
-	}
-
-	public override int VisitMultiplicationDivision(MathParser.MultiplicationDivisionContext context)
-	{
-		int lhs = Visit(context.expression(0));
-		int rhs = Visit(context.expression(1));
-		string op = context.op.Text;
-		return BinaryOpImpl(lhs, rhs, op);
-	}
-
-	private static int BinaryOpImpl(int lhs, int rhs, string op)
-	{
 		return op switch
 		       {
-			       "+" => lhs + rhs,
-			       "-" => lhs - rhs,
-			       "*" => lhs * rhs,
-			       "/" => lhs / rhs,
-			       _   => throw new ArgumentException($"Unknown binary operator {op}")
+			       "+"           => lhs + rhs,
+			       "-"           => lhs - rhs,
+			       "*"           => lhs * rhs,
+			       "/"           => lhs / rhs,
+			       powerOperator => (int) Pow(lhs, rhs),
+			       _             => throw new ArgumentException($"Unknown binary operator {op}")
 		       };
 	}
 }
