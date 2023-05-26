@@ -37,7 +37,8 @@ public partial class MathParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, NUMBER=7, WHITESPACE=8;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, NUMBER=9, 
+		WHITESPACE=10;
 	public const int
 		RULE_expression = 0;
 	public static readonly string[] ruleNames = {
@@ -45,10 +46,10 @@ public partial class MathParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'*'", "'/'", "'+'", "'-'", "'('", "')'"
+		null, "'!'", "'^'", "'*'", "'/'", "'+'", "'-'", "'('", "')'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, null, null, null, "NUMBER", "WHITESPACE"
+		null, null, null, null, null, null, null, null, null, "NUMBER", "WHITESPACE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -116,7 +117,29 @@ public partial class MathParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class AdditionSubtractionContext : ExpressionContext {
+	public partial class FactorialContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
+		}
+		public FactorialContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IMathListener typedListener = listener as IMathListener;
+			if (typedListener != null) typedListener.EnterFactorial(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IMathListener typedListener = listener as IMathListener;
+			if (typedListener != null) typedListener.ExitFactorial(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitFactorial(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class BinaryOperationContext : ExpressionContext {
 		public IToken op;
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
@@ -124,21 +147,21 @@ public partial class MathParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
-		public AdditionSubtractionContext(ExpressionContext context) { CopyFrom(context); }
+		public BinaryOperationContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.EnterAdditionSubtraction(this);
+			if (typedListener != null) typedListener.EnterBinaryOperation(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.ExitAdditionSubtraction(this);
+			if (typedListener != null) typedListener.ExitBinaryOperation(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAdditionSubtraction(this);
+			if (typedVisitor != null) return typedVisitor.VisitBinaryOperation(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -159,32 +182,6 @@ public partial class MathParser : Parser {
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class MultiplicationDivisionContext : ExpressionContext {
-		public IToken op;
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
-			return GetRuleContexts<ExpressionContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
-			return GetRuleContext<ExpressionContext>(i);
-		}
-		public MultiplicationDivisionContext(ExpressionContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.EnterMultiplicationDivision(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.ExitMultiplicationDivision(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitMultiplicationDivision(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -219,24 +216,24 @@ public partial class MathParser : Parser {
 				Match(NUMBER);
 				}
 				break;
-			case T__4:
+			case T__6:
 				{
 				_localctx = new ParenthesizedExpressionContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 4;
-				Match(T__4);
+				Match(T__6);
 				State = 5;
 				expression(0);
 				State = 6;
-				Match(T__5);
+				Match(T__7);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 18;
+			State = 23;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
@@ -245,53 +242,75 @@ public partial class MathParser : Parser {
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 16;
+					State = 21;
 					ErrorHandler.Sync(this);
 					switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 					case 1:
 						{
-						_localctx = new MultiplicationDivisionContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new BinaryOperationContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 10;
-						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
+						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
 						State = 11;
-						((MultiplicationDivisionContext)_localctx).op = TokenStream.LT(1);
-						_la = TokenStream.LA(1);
-						if ( !(_la==T__0 || _la==T__1) ) {
-							((MultiplicationDivisionContext)_localctx).op = ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
+						((BinaryOperationContext)_localctx).op = Match(T__1);
 						State = 12;
-						expression(4);
+						expression(5);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new AdditionSubtractionContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new BinaryOperationContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 13;
-						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
+						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
 						State = 14;
-						((AdditionSubtractionContext)_localctx).op = TokenStream.LT(1);
+						((BinaryOperationContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==T__2 || _la==T__3) ) {
-							((AdditionSubtractionContext)_localctx).op = ErrorHandler.RecoverInline(this);
+							((BinaryOperationContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
 						State = 15;
+						expression(4);
+						}
+						break;
+					case 3:
+						{
+						_localctx = new BinaryOperationContext(new ExpressionContext(_parentctx, _parentState));
+						PushNewRecursionContext(_localctx, _startState, RULE_expression);
+						State = 16;
+						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
+						State = 17;
+						((BinaryOperationContext)_localctx).op = TokenStream.LT(1);
+						_la = TokenStream.LA(1);
+						if ( !(_la==T__4 || _la==T__5) ) {
+							((BinaryOperationContext)_localctx).op = ErrorHandler.RecoverInline(this);
+						}
+						else {
+							ErrorHandler.ReportMatch(this);
+						    Consume();
+						}
+						State = 18;
 						expression(3);
+						}
+						break;
+					case 4:
+						{
+						_localctx = new FactorialContext(new ExpressionContext(_parentctx, _parentState));
+						PushNewRecursionContext(_localctx, _startState, RULE_expression);
+						State = 19;
+						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
+						State = 20;
+						Match(T__0);
 						}
 						break;
 					}
 					} 
 				}
-				State = 20;
+				State = 25;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
 			}
@@ -316,20 +335,24 @@ public partial class MathParser : Parser {
 	}
 	private bool expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return Precpred(Context, 3);
-		case 1: return Precpred(Context, 2);
+		case 0: return Precpred(Context, 4);
+		case 1: return Precpred(Context, 3);
+		case 2: return Precpred(Context, 2);
+		case 3: return Precpred(Context, 5);
 		}
 		return true;
 	}
 
 	private static int[] _serializedATN = {
-		4,1,8,22,2,0,7,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,9,8,0,1,0,1,0,1,0,1,0,1,0,
-		1,0,5,0,17,8,0,10,0,12,0,20,9,0,1,0,0,1,0,1,0,0,2,1,0,1,2,1,0,3,4,23,0,
-		8,1,0,0,0,2,3,6,0,-1,0,3,9,5,7,0,0,4,5,5,5,0,0,5,6,3,0,0,0,6,7,5,6,0,0,
-		7,9,1,0,0,0,8,2,1,0,0,0,8,4,1,0,0,0,9,18,1,0,0,0,10,11,10,3,0,0,11,12,
-		7,0,0,0,12,17,3,0,0,4,13,14,10,2,0,0,14,15,7,1,0,0,15,17,3,0,0,3,16,10,
-		1,0,0,0,16,13,1,0,0,0,17,20,1,0,0,0,18,16,1,0,0,0,18,19,1,0,0,0,19,1,1,
-		0,0,0,20,18,1,0,0,0,3,8,16,18
+		4,1,10,27,2,0,7,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,9,8,0,1,0,1,0,1,0,1,0,1,
+		0,1,0,1,0,1,0,1,0,1,0,1,0,5,0,22,8,0,10,0,12,0,25,9,0,1,0,0,1,0,1,0,0,
+		2,1,0,3,4,1,0,5,6,30,0,8,1,0,0,0,2,3,6,0,-1,0,3,9,5,9,0,0,4,5,5,7,0,0,
+		5,6,3,0,0,0,6,7,5,8,0,0,7,9,1,0,0,0,8,2,1,0,0,0,8,4,1,0,0,0,9,23,1,0,0,
+		0,10,11,10,4,0,0,11,12,5,2,0,0,12,22,3,0,0,5,13,14,10,3,0,0,14,15,7,0,
+		0,0,15,22,3,0,0,4,16,17,10,2,0,0,17,18,7,1,0,0,18,22,3,0,0,3,19,20,10,
+		5,0,0,20,22,5,1,0,0,21,10,1,0,0,0,21,13,1,0,0,0,21,16,1,0,0,0,21,19,1,
+		0,0,0,22,25,1,0,0,0,23,21,1,0,0,0,23,24,1,0,0,0,24,1,1,0,0,0,25,23,1,0,
+		0,0,3,8,21,23
 	};
 
 	public static readonly ATN _ATN =

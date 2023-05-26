@@ -51,19 +51,33 @@ public partial class MathBaseListener : IMathListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParenthesizedExpression([NotNull] MathParser.ParenthesizedExpressionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>AdditionSubtraction</c>
+	/// Enter a parse tree produced by the <c>Factorial</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context) { }
+	public virtual void EnterFactorial([NotNull] MathParser.FactorialContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>AdditionSubtraction</c>
+	/// Exit a parse tree produced by the <c>Factorial</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context) { }
+	public virtual void ExitFactorial([NotNull] MathParser.FactorialContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BinaryOperation</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBinaryOperation([NotNull] MathParser.BinaryOperationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BinaryOperation</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBinaryOperation([NotNull] MathParser.BinaryOperationContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Literal</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
@@ -78,20 +92,6 @@ public partial class MathBaseListener : IMathListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLiteral([NotNull] MathParser.LiteralContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>MultiplicationDivision</c>
-	/// labeled alternative in <see cref="MathParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>MultiplicationDivision</c>
-	/// labeled alternative in <see cref="MathParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

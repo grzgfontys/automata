@@ -40,12 +40,19 @@ public interface IMathVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParenthesizedExpression([NotNull] MathParser.ParenthesizedExpressionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>AdditionSubtraction</c>
+	/// Visit a parse tree produced by the <c>Factorial</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context);
+	Result VisitFactorial([NotNull] MathParser.FactorialContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>BinaryOperation</c>
+	/// labeled alternative in <see cref="MathParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBinaryOperation([NotNull] MathParser.BinaryOperationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>Literal</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
@@ -53,12 +60,5 @@ public interface IMathVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitLiteral([NotNull] MathParser.LiteralContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>MultiplicationDivision</c>
-	/// labeled alternative in <see cref="MathParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context);
 }
 } // namespace Grammar.Assignment2
