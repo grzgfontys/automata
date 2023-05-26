@@ -140,6 +140,7 @@ public partial class MathParser : Parser {
 		}
 	}
 	public partial class MultiplicationContext : ExpressionContext {
+		public IToken op;
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
@@ -167,6 +168,7 @@ public partial class MathParser : Parser {
 		}
 	}
 	public partial class AdditionContext : ExpressionContext {
+		public IToken op;
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
@@ -260,9 +262,10 @@ public partial class MathParser : Parser {
 						State = 10;
 						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
 						State = 11;
+						((MultiplicationContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==MULT || _la==DIV) ) {
-						ErrorHandler.RecoverInline(this);
+							((MultiplicationContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
 							ErrorHandler.ReportMatch(this);
@@ -279,9 +282,10 @@ public partial class MathParser : Parser {
 						State = 13;
 						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
 						State = 14;
+						((AdditionContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
-						ErrorHandler.RecoverInline(this);
+							((AdditionContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
 							ErrorHandler.ReportMatch(this);
