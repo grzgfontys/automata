@@ -1,8 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using Automata.Parsing.Human;
 using Automata.Parsing.Math;
-using Grammar.Assignment1;
 using Grammar.Assignment2;
 
 namespace Automata;
@@ -19,9 +17,10 @@ public static class Program
 		var parser = new MathParser(tokens);
 
 		IParseTree tree = parser.expression();
-		MathVisitor visitor = new();
-
-		var result = visitor.Visit(tree);
+		MathListener listener = new();
+		ParseTreeWalker.Default.Walk(listener, tree);
+		
+		var result = listener.GetResult((MathParser.ExpressionContext) tree);
 		Console.WriteLine($"{Expression} = {result}");
 	}
 }
