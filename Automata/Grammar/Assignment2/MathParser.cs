@@ -95,79 +95,31 @@ public partial class MathParser : Parser {
 			base.CopyFrom(context);
 		}
 	}
-	public partial class NumberContext : ExpressionContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NUMBER() { return GetToken(MathParser.NUMBER, 0); }
-		public NumberContext(ExpressionContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.EnterNumber(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.ExitNumber(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNumber(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class ParenthesizedContext : ExpressionContext {
+	public partial class ParenthesizedExpressionContext : ExpressionContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OPENPAREN() { return GetToken(MathParser.OPENPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSEPAREN() { return GetToken(MathParser.CLOSEPAREN, 0); }
-		public ParenthesizedContext(ExpressionContext context) { CopyFrom(context); }
+		public ParenthesizedExpressionContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.EnterParenthesized(this);
+			if (typedListener != null) typedListener.EnterParenthesizedExpression(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.ExitParenthesized(this);
+			if (typedListener != null) typedListener.ExitParenthesizedExpression(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitParenthesized(this);
+			if (typedVisitor != null) return typedVisitor.VisitParenthesizedExpression(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class MultiplicationContext : ExpressionContext {
-		public IToken op;
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
-			return GetRuleContexts<ExpressionContext>();
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
-			return GetRuleContext<ExpressionContext>(i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULT() { return GetToken(MathParser.MULT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIV() { return GetToken(MathParser.DIV, 0); }
-		public MultiplicationContext(ExpressionContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.EnterMultiplication(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.ExitMultiplication(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitMultiplication(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class AdditionContext : ExpressionContext {
+	public partial class AdditionSubtractionContext : ExpressionContext {
 		public IToken op;
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
@@ -177,21 +129,69 @@ public partial class MathParser : Parser {
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(MathParser.PLUS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(MathParser.MINUS, 0); }
-		public AdditionContext(ExpressionContext context) { CopyFrom(context); }
+		public AdditionSubtractionContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.EnterAddition(this);
+			if (typedListener != null) typedListener.EnterAdditionSubtraction(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IMathListener typedListener = listener as IMathListener;
-			if (typedListener != null) typedListener.ExitAddition(this);
+			if (typedListener != null) typedListener.ExitAdditionSubtraction(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAddition(this);
+			if (typedVisitor != null) return typedVisitor.VisitAdditionSubtraction(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class LiteralContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NUMBER() { return GetToken(MathParser.NUMBER, 0); }
+		public LiteralContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IMathListener typedListener = listener as IMathListener;
+			if (typedListener != null) typedListener.EnterLiteral(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IMathListener typedListener = listener as IMathListener;
+			if (typedListener != null) typedListener.ExitLiteral(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLiteral(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class MultiplicationDivisionContext : ExpressionContext {
+		public IToken op;
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULT() { return GetToken(MathParser.MULT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIV() { return GetToken(MathParser.DIV, 0); }
+		public MultiplicationDivisionContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IMathListener typedListener = listener as IMathListener;
+			if (typedListener != null) typedListener.EnterMultiplicationDivision(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IMathListener typedListener = listener as IMathListener;
+			if (typedListener != null) typedListener.ExitMultiplicationDivision(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMathVisitor<TResult> typedVisitor = visitor as IMathVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMultiplicationDivision(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -218,7 +218,7 @@ public partial class MathParser : Parser {
 			switch (TokenStream.LA(1)) {
 			case NUMBER:
 				{
-				_localctx = new NumberContext(_localctx);
+				_localctx = new LiteralContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 
@@ -228,7 +228,7 @@ public partial class MathParser : Parser {
 				break;
 			case OPENPAREN:
 				{
-				_localctx = new ParenthesizedContext(_localctx);
+				_localctx = new ParenthesizedExpressionContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 4;
@@ -257,15 +257,15 @@ public partial class MathParser : Parser {
 					switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 					case 1:
 						{
-						_localctx = new MultiplicationContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new MultiplicationDivisionContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 10;
 						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
 						State = 11;
-						((MultiplicationContext)_localctx).op = TokenStream.LT(1);
+						((MultiplicationDivisionContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==MULT || _la==DIV) ) {
-							((MultiplicationContext)_localctx).op = ErrorHandler.RecoverInline(this);
+							((MultiplicationDivisionContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
 							ErrorHandler.ReportMatch(this);
@@ -277,15 +277,15 @@ public partial class MathParser : Parser {
 						break;
 					case 2:
 						{
-						_localctx = new AdditionContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new AdditionSubtractionContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 13;
 						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
 						State = 14;
-						((AdditionContext)_localctx).op = TokenStream.LT(1);
+						((AdditionSubtractionContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
-							((AdditionContext)_localctx).op = ErrorHandler.RecoverInline(this);
+							((AdditionSubtractionContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
 							ErrorHandler.ReportMatch(this);

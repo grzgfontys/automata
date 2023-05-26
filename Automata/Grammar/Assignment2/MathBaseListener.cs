@@ -37,61 +37,61 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MathBaseListener : IMathListener {
 	/// <summary>
-	/// Enter a parse tree produced by the <c>number</c>
+	/// Enter a parse tree produced by the <c>ParenthesizedExpression</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumber([NotNull] MathParser.NumberContext context) { }
+	public virtual void EnterParenthesizedExpression([NotNull] MathParser.ParenthesizedExpressionContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>number</c>
+	/// Exit a parse tree produced by the <c>ParenthesizedExpression</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumber([NotNull] MathParser.NumberContext context) { }
+	public virtual void ExitParenthesizedExpression([NotNull] MathParser.ParenthesizedExpressionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>parenthesized</c>
+	/// Enter a parse tree produced by the <c>AdditionSubtraction</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParenthesized([NotNull] MathParser.ParenthesizedContext context) { }
+	public virtual void EnterAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>parenthesized</c>
+	/// Exit a parse tree produced by the <c>AdditionSubtraction</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParenthesized([NotNull] MathParser.ParenthesizedContext context) { }
+	public virtual void ExitAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>multiplication</c>
+	/// Enter a parse tree produced by the <c>Literal</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMultiplication([NotNull] MathParser.MultiplicationContext context) { }
+	public virtual void EnterLiteral([NotNull] MathParser.LiteralContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>multiplication</c>
+	/// Exit a parse tree produced by the <c>Literal</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMultiplication([NotNull] MathParser.MultiplicationContext context) { }
+	public virtual void ExitLiteral([NotNull] MathParser.LiteralContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>addition</c>
+	/// Enter a parse tree produced by the <c>MultiplicationDivision</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAddition([NotNull] MathParser.AdditionContext context) { }
+	public virtual void EnterMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>addition</c>
+	/// Exit a parse tree produced by the <c>MultiplicationDivision</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAddition([NotNull] MathParser.AdditionContext context) { }
+	public virtual void ExitMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

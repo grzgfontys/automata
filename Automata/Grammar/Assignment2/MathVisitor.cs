@@ -33,32 +33,32 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IMathVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by the <c>number</c>
+	/// Visit a parse tree produced by the <c>ParenthesizedExpression</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNumber([NotNull] MathParser.NumberContext context);
+	Result VisitParenthesizedExpression([NotNull] MathParser.ParenthesizedExpressionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>parenthesized</c>
+	/// Visit a parse tree produced by the <c>AdditionSubtraction</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParenthesized([NotNull] MathParser.ParenthesizedContext context);
+	Result VisitAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>multiplication</c>
+	/// Visit a parse tree produced by the <c>Literal</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMultiplication([NotNull] MathParser.MultiplicationContext context);
+	Result VisitLiteral([NotNull] MathParser.LiteralContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>addition</c>
+	/// Visit a parse tree produced by the <c>MultiplicationDivision</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAddition([NotNull] MathParser.AdditionContext context);
+	Result VisitMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context);
 }
 } // namespace Grammar.Assignment2

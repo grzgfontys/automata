@@ -36,7 +36,7 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MathBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IMathVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by the <c>number</c>
+	/// Visit a parse tree produced by the <c>ParenthesizedExpression</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -45,9 +45,9 @@ public partial class MathBaseVisitor<Result> : AbstractParseTreeVisitor<Result>,
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitNumber([NotNull] MathParser.NumberContext context) { return VisitChildren(context); }
+	public virtual Result VisitParenthesizedExpression([NotNull] MathParser.ParenthesizedExpressionContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>parenthesized</c>
+	/// Visit a parse tree produced by the <c>AdditionSubtraction</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -56,9 +56,9 @@ public partial class MathBaseVisitor<Result> : AbstractParseTreeVisitor<Result>,
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitParenthesized([NotNull] MathParser.ParenthesizedContext context) { return VisitChildren(context); }
+	public virtual Result VisitAdditionSubtraction([NotNull] MathParser.AdditionSubtractionContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>multiplication</c>
+	/// Visit a parse tree produced by the <c>Literal</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -67,9 +67,9 @@ public partial class MathBaseVisitor<Result> : AbstractParseTreeVisitor<Result>,
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMultiplication([NotNull] MathParser.MultiplicationContext context) { return VisitChildren(context); }
+	public virtual Result VisitLiteral([NotNull] MathParser.LiteralContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>addition</c>
+	/// Visit a parse tree produced by the <c>MultiplicationDivision</c>
 	/// labeled alternative in <see cref="MathParser.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -78,6 +78,6 @@ public partial class MathBaseVisitor<Result> : AbstractParseTreeVisitor<Result>,
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAddition([NotNull] MathParser.AdditionContext context) { return VisitChildren(context); }
+	public virtual Result VisitMultiplicationDivision([NotNull] MathParser.MultiplicationDivisionContext context) { return VisitChildren(context); }
 }
 } // namespace Grammar.Assignment2
