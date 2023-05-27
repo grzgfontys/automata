@@ -1,3 +1,5 @@
 bin/
 obj/
 .idea/
+antlr-4.13.0-complete.jar
+Automata.sln.DotSettings.user
