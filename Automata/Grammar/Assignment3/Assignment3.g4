@@ -4,14 +4,14 @@ file
     : line*EOF;
     
 line
-    : keywords '(' ((VARIABLE | expression) ','?)* ')'      # InvokeFunction
+    : keywords '(' (expression ','?)+ ')'                   # InvokeFunction
     | varAssignment                                         # VariableAssignment
     | expression                                            # LoneExpression
     ;
 
 varAssignment
-    : VARIABLE op='=' NUMBER
-    | VARIABLE op='=' expression
+    : VARIABLE op='=' NUMBER                # varAssignmentNumber
+    | VARIABLE op='=' expression            # varAssignmentExpression
     ;
 
 expression 
