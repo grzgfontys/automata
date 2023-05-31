@@ -6,14 +6,14 @@ file
     
 line
     : functionCall                                         
-    | varAssignment                                         
+    | variableAssignment                                         
     ;
     
 functionCall
     : keyword '(' (expression ','?)+ ')'
     ;
 
-varAssignment
+variableAssignment
     : IDENT '=' expression           
     ;
 
@@ -33,11 +33,11 @@ keyword
 
 KW_PRINT    : 'print';
 NUMBER      : NONZERO_DIGIT DIGIT* | ZERO;
-IDENT       : LETTER+;
+IDENT       : LETTER (LETTER | DIGIT)*;
 WHITESPACE  : [ \t\n\r]+ -> skip;
 NEWLINE     : '\r'? '\n';
 
 fragment NONZERO_DIGIT  : [1-9];
 fragment ZERO           : '0';
 fragment DIGIT          : ZERO | NONZERO_DIGIT;
-fragment LETTER        : [a-zA-Z];
+fragment LETTER         : [a-zA-Z];
