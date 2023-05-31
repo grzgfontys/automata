@@ -46,6 +46,8 @@ public static class Program
 		print(bb)
 		bb = bb^4
 		print(bb)
+
+		print(1,2,3)
 		""";
 
 	private static void Assignment2(string expression)
