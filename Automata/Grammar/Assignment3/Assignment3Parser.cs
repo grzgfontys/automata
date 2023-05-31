@@ -633,6 +633,7 @@ public partial class Assignment3Parser : Parser {
 	}
 
 	public partial class KeywordContext : ParserRuleContext {
+		public IToken kw;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KW_PRINT() { return GetToken(Assignment3Parser.KW_PRINT, 0); }
 		public KeywordContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -665,7 +666,7 @@ public partial class Assignment3Parser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 65;
-			Match(KW_PRINT);
+			_localctx.kw = Match(KW_PRINT);
 			}
 		}
 		catch (RecognitionException re) {
