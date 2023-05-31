@@ -1,22 +1,25 @@
 grammar Assignment3;
 
 file
-    : line*EOF;
+    : line*EOF
+    ;
     
 line
-    : keywords '(' (expression ','?)+ ')'                   # InvokeFunction
-    | varAssignment                                         # VariableAssignment
-    | expression                                            # LoneExpression
+    : functionCall                                         
+    | varAssignment                                         
+    ;
+    
+functionCall
+    : keyword '(' (expression ','?)+ ')'
     ;
 
 varAssignment
-    : VARIABLE op='=' NUMBER                # varAssignmentNumber
-    | VARIABLE op='=' expression            # varAssignmentExpression
+    : IDENT '=' expression           
     ;
 
 expression 
     : NUMBER                                 # Literal
-    | VARIABLE                               # NestedVar
+    | IDENT                                  # NestedVar
     | expression '!'                         # Factorial
     | expression op='^' expression           # BinaryOperation
     | expression op=('*'|'/') expression     # BinaryOperation
@@ -24,18 +27,17 @@ expression
     | '(' expression ')'                     # ParenthesizedExpression
     ;
     
-keywords
-    : 'print'       # Print
+keyword
+    : KW_PRINT
     ;
 
-// Może być to albo tak jak zrobiłem w keywords, wychodzi na to że on z pierwszeństwem traktuje wyszukiwanie konkretnych stringów jako tokenów w parsing rules a nie w lexer rules
-//PRINT       : 'print';
+KW_PRINT    : 'print';
 NUMBER      : NONZERO_DIGIT DIGIT* | ZERO;
-VARIABLE    : LETTERS+;
+IDENT       : LETTER+;
 WHITESPACE  : [ \t\n\r]+ -> skip;
 NEWLINE     : '\r'? '\n';
 
 fragment NONZERO_DIGIT  : [1-9];
 fragment ZERO           : '0';
 fragment DIGIT          : ZERO | NONZERO_DIGIT;
-fragment LETTERS        : [a-zA-Z];
+fragment LETTER        : [a-zA-Z];
