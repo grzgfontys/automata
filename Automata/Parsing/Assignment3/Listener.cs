@@ -5,14 +5,14 @@ namespace Automata.Parsing.Assignment3;
 
 public class Listener : Assignment3BaseListener
 {
-    public Dictionary<IRuleNode, int> values = new();
-    public Dictionary<string, int> variables = new();
+    private readonly Dictionary<IRuleNode, int> values = new();
+    private readonly Dictionary<string, int> variables = new();
     
     public int GetResult(Assignment3Parser.ExpressionContext expr) => values[expr];
 
     public void PrintVariables()
     {
-        foreach (KeyValuePair<string,int> variable in variables)
+        foreach (var variable in variables)
         {
             Console.WriteLine($"{variable.Key} = {variable.Value}");
         }
