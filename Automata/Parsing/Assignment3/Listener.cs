@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Antlr4.Runtime.Tree;
+using Grammar.Assignment3;
 using static System.Math;
 
 namespace Automata.Parsing.Assignment3;
@@ -19,16 +20,16 @@ public class Listener : Assignment3BaseListener
 		}
 	}
 
-	public override void ExitInvokeFunction(Assignment3Parser.InvokeFunctionContext context)
+	public override void ExitFunctionCall(Assignment3Parser.FunctionCallContext context)
 	{
-		string keyword = context.keywords().GetText();
-		switch ( keyword )
+		var keyword = context.keyword().Start;
+		switch ( keyword.Type )
 		{
-			case "print":
+			case Assignment3Parser.KW_PRINT:
 				HandlePrintFunction(context.expression());
 				break;
 			default:
-				throw new UnreachableException($"Unknown keyword: {keyword}");
+				throw new UnreachableException($"Unknown keyword: {keyword.Text}");
 		}
 	}
 
@@ -40,23 +41,16 @@ public class Listener : Assignment3BaseListener
 		}
 	}
 
-	public override void ExitVarAssignmentNumber(Assignment3Parser.VarAssignmentNumberContext context)
+	public override void ExitVariableAssignment(Assignment3Parser.VariableAssignmentContext context)
 	{
-		string varName = context.VARIABLE().GetText();
-		int value = int.Parse(context.NUMBER().GetText());
-		variables[varName] = value;
-	}
-
-	public override void ExitVarAssignmentExpression(Assignment3Parser.VarAssignmentExpressionContext context)
-	{
-		string varName = context.VARIABLE().GetText();
+		string varName = context.IDENT().GetText();
 		int value = values[context.expression()];
 		variables[varName] = value;
 	}
 
 	public override void ExitNestedVar(Assignment3Parser.NestedVarContext context)
 	{
-		int value = variables[context.VARIABLE().GetText()];
+		int value = variables[context.IDENT().GetText()];
 		values[context] = value;
 	}
 
