@@ -28,7 +28,7 @@ expression
     ;
     
 keyword
-    : KW_PRINT
+    : kw=KW_PRINT
     ;
 
 KW_PRINT    : 'print';
