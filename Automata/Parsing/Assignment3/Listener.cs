@@ -18,17 +18,34 @@ public class Listener : Assignment3BaseListener
         }
     }
     
+    public override void ExitInvokeFunction(Assignment3Parser.InvokeFunctionContext context)
+    {
+        switch (context.keywords().GetText())
+        {
+            case "print":
+                Console.WriteLine(values[context.expression(0)]);
+                break;
+        }
+    }
+    
     public override void ExitVarAssignmentNumber(Assignment3Parser.VarAssignmentNumberContext context)
     {
         string varName = context.VARIABLE().GetText();
         int value = int.Parse(context.NUMBER().GetText());
         variables[varName] = value;
     }
+    
     public override void ExitVarAssignmentExpression(Assignment3Parser.VarAssignmentExpressionContext context)
     {
         string varName = context.VARIABLE().GetText();
         int value = values[context.expression()];
         variables[varName] = value;
+    }
+    
+    public override void ExitNestedVar(Assignment3Parser.NestedVarContext context)
+    {
+        int value = variables[context.VARIABLE().GetText()];
+        values[context] = value;
     }
     
     public override void ExitLiteral(Assignment3Parser.LiteralContext context)
@@ -47,20 +64,6 @@ public class Listener : Assignment3BaseListener
         int value = values[context.expression()];
         int result = Factorial(value);
         values[context] = result;
-    }
-    public override void ExitNestedVar(Assignment3Parser.NestedVarContext context)
-    {
-        int value = variables[context.VARIABLE().GetText()];
-        values[context] = value;
-    }
-    public override void ExitInvokeFunction(Assignment3Parser.InvokeFunctionContext context)
-    {
-        switch (context.keywords().GetText())
-        {
-            case "print":
-                Console.WriteLine(values[context.expression(0)]);
-                break;
-        }
     }
 
     public override void ExitBinaryOperation(Assignment3Parser.BinaryOperationContext context)
