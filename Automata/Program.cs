@@ -3,6 +3,7 @@ using Antlr4.Runtime.Tree;
 using Automata.Parsing.Assignment3;
 using Automata.Parsing.Math;
 using Grammar.Assignment2;
+using Grammar.Assignment3;
 
 namespace Automata;
 
@@ -18,21 +19,14 @@ public static class Program
 		aa = 1
 		bb = 6 - 2 * 2
 
-		3 + 2
-
 		cc = aa + bb
 		dd = bb + 2
 		ddd = dd
-
-		3 + 2
-		3 * 3 - 2 ^ (2!)
 
 		print(3 * 3 - 2 ^ (2!))
 		print(aa)
 		print(bb)
 		print(cc)
-
-		2 + 2 * 2
 
 		print(dd)
 		print(ddd)
@@ -40,8 +34,6 @@ public static class Program
 		print(aa + bb)
 		print(aa * 10)
 		print(aa)
-
-		2 * 2 + 2
 
 		print(bb)
 		bb = bb^4
