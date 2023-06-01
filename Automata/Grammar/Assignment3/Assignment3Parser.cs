@@ -559,7 +559,7 @@ public partial class Assignment3Parser : Parser {
 						State = 50;
 						((BinaryOperationContext)_localctx).op = Match(T__5);
 						State = 51;
-						expression(5);
+						expression(4);
 						}
 						break;
 					case 2:
@@ -633,7 +633,6 @@ public partial class Assignment3Parser : Parser {
 	}
 
 	public partial class KeywordContext : ParserRuleContext {
-		public IToken kw;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode KW_PRINT() { return GetToken(Assignment3Parser.KW_PRINT, 0); }
 		public KeywordContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -666,7 +665,7 @@ public partial class Assignment3Parser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 65;
-			_localctx.kw = Match(KW_PRINT);
+			Match(KW_PRINT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -712,7 +711,7 @@ public partial class Assignment3Parser : Parser {
 		38,5,4,0,0,38,39,3,8,4,0,39,7,1,0,0,0,40,41,6,4,-1,0,41,48,5,12,0,0,42,
 		48,5,13,0,0,43,44,5,1,0,0,44,45,3,8,4,0,45,46,5,3,0,0,46,48,1,0,0,0,47,
 		40,1,0,0,0,47,42,1,0,0,0,47,43,1,0,0,0,48,62,1,0,0,0,49,50,10,4,0,0,50,
-		51,5,6,0,0,51,61,3,8,4,5,52,53,10,3,0,0,53,54,7,0,0,0,54,61,3,8,4,4,55,
+		51,5,6,0,0,51,61,3,8,4,4,52,53,10,3,0,0,53,54,7,0,0,0,54,61,3,8,4,4,55,
 		56,10,2,0,0,56,57,7,1,0,0,57,61,3,8,4,3,58,59,10,5,0,0,59,61,5,5,0,0,60,
 		49,1,0,0,0,60,52,1,0,0,0,60,55,1,0,0,0,60,58,1,0,0,0,61,64,1,0,0,0,62,
 		60,1,0,0,0,62,63,1,0,0,0,63,9,1,0,0,0,64,62,1,0,0,0,65,66,5,11,0,0,66,
