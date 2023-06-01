@@ -1,6 +1,24 @@
-asd = 3 * 3 - 2 ^ (2!)
-dd = 0
-dd = 3 + dd
-print(1)
-print(dd)
+aa = 1
+bb = 6 - 2 * 2
+
+cc = aa + bb
+dd = bb + 2
+ddd = dd
+
 print(3 * 3 - 2 ^ (2!))
+print(aa)
+print(bb)
+print(cc)
+
+print(dd)
+print(ddd)
+print(ddd!)
+print(aa + bb)
+print(aa * 10)
+print(aa)
+
+print(bb)
+bb = bb^4
+print(bb)
+
+print(1,2,3)
