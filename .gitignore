@@ -1,6 +1,7 @@
 bin/
 obj/
 .idea/
+._*
 antlr-4.13.0-complete.jar
 Automata.sln.DotSettings.user
 the-definitive-antlr-4-reference.pdf
