@@ -1,12 +1,12 @@
 grammar Math;
 
 expression 
-    : NUMBER                                 # Literal
-    | expression '!'                         # Factorial
-    | expression op='^' expression           # BinaryOperation
-    | expression op=('*'|'/') expression     # BinaryOperation
-    | expression op=('+'|'-') expression     # BinaryOperation
-    | '(' expression ')'                     # ParenthesizedExpression
+    : NUMBER                                        # Literal
+    | expression '!'                                # Factorial
+    | <assoc=right> expression op='^' expression    # BinaryOperation
+    | expression op=('*'|'/') expression            # BinaryOperation
+    | expression op=('+'|'-') expression            # BinaryOperation
+    | '(' expression ')'                            # ParenthesizedExpression
     ;
 
 

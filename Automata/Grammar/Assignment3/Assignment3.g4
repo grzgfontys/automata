@@ -18,13 +18,13 @@ variableAssignment
     ;
 
 expression 
-    : NUMBER                                 # Literal
-    | IDENT                                  # NestedVar
-    | expression '!'                         # Factorial
-    | expression op='^' expression           # BinaryOperation
-    | expression op=('*'|'/') expression     # BinaryOperation
-    | expression op=('+'|'-') expression     # BinaryOperation
-    | '(' expression ')'                     # ParenthesizedExpression
+    : NUMBER                                        # Literal
+    | IDENT                                         # NestedVar
+    | expression '!'                                # Factorial
+    | <assoc=right> expression op='^' expression    # BinaryOperation
+    | expression op=('*'|'/') expression            # BinaryOperation
+    | expression op=('+'|'-') expression            # BinaryOperation
+    | '(' expression ')'                            # ParenthesizedExpression
     ;
     
 keyword
