@@ -56,11 +56,11 @@ public class Calculator : CalculatorBaseVisitor<object?> // nullable object beca
 		return null;
 	}
 
-	private static void HandlePrintFunction(IEnumerable<CalculatorParser.ExpressionContext> expressions)
+	private void HandlePrintFunction(IEnumerable<CalculatorParser.ExpressionContext> expressions)
 	{
 		foreach ( var expression in expressions )
 		{
-			Console.WriteLine(expression.GetText());
+			Console.WriteLine(_intVisitor.Visit(expression));
 		}
 	}
 
