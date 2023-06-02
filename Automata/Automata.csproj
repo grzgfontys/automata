@@ -18,6 +18,10 @@
     <ItemGroup>
         <None Remove="./**/*.tokens" />
         <None Remove="./**/*.interp" />
+        
+        <None Update="input/*">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
