@@ -6,6 +6,7 @@ file
 
 statementBlock
     : '{' NEWLINE statements NEWLINE '}'
+    | '{' NEWLINE? '}' // empty
     ;
     
 statement
@@ -29,6 +30,7 @@ whileStatement
     
 statements
     : NEWLINE* statement (NEWLINE+ statement)* NEWLINE*
+    | NEWLINE*
     ;
     
 functionCall
@@ -42,6 +44,9 @@ variableAssignment
 booleanExpression
     : expression COMP_OPERATOR expression           # Comparison
     | '!' booleanExpression                         # Negation
+    | booleanExpression 'and' booleanExpression     # LogicalAnd
+    | booleanExpression 'or' booleanExpression      # LogicalOr
+    | '(' booleanExpression ')'                     # ParenthesizedBooleanExpression
     ;
 
 expression 
@@ -60,10 +65,10 @@ keyword
 
 
 KW_PRINT        : 'print';
-COMP_OPERATOR   : '>' | '>=' | '<' | '<=' | '==' ;
+COMP_OPERATOR   : '>' | '>=' | '<' | '<=' | '==' | '!=' ;
 NUMBER          : NONZERO_DIGIT DIGIT* | ZERO;
 IDENT           : LETTER (LETTER | DIGIT)*;
-NEWLINE         : '\n';
+NEWLINE         : '\r'? '\n';
 WHITESPACE      : [ \t]+ -> skip;
 
 fragment NONZERO_DIGIT  : [1-9];
