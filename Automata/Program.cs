@@ -14,35 +14,8 @@ public static class Program
 		"3 + 4", "3 - 5", "10 * 30", "45 / 3", "5!", "2^5", "2 + 2 + 5 * 3 + 4", "3 * (1 + 2)^2", "(3*(1+1)/2)+1",
 		"((3*(1+1)/2)+1)!", "((3*(1+1)/2)+1)^2", "((3*(1+1)/2)+1)^(3!)"
 	};
-
-	private const string Input = """
-		aa = 1
-		bb = 6 - 2 * 2
-
-		cc = aa + bb
-		dd = bb + 2
-		ddd = dd
-
-		print(3 * 3 - 2 ^ (2!))
-		print(aa)
-		print(bb)
-		print(cc)
-
-		print(dd)
-		print(ddd)
-		print(ddd!)
-		print(aa + bb)
-		print(aa * 10)
-		print(aa)
-
-		print(bb)
-		bb = bb^4
-		print(bb)
-
-		print(1,2,3)
-		""";
-
-	private static void Assignment2(string expression)
+	
+	private static void Assignment2()
 	{
 		bool useVisitor = false;
 
