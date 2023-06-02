@@ -11,17 +11,11 @@ namespace Automata;
 
 public static class Program
 {
-	private static readonly string[] Expressions =
-	{
-		"3 + 4", "3 - 5", "10 * 30", "45 / 3", "5!", "2^5", "2 + 2 + 5 * 3 + 4", "3 * (1 + 2)^2", "(3*(1+1)/2)+1",
-		"((3*(1+1)/2)+1)!", "((3*(1+1)/2)+1)^2", "((3*(1+1)/2)+1)^(3!)"
-	};
-	
-	private static void Assignment2()
+	private static void Assignment2(string input)
 	{
 		bool useVisitor = false;
 
-		foreach ( string expression in Expressions )
+		foreach ( string expression in input.Split("\n") )
 		{
 			ICharStream stream = CharStreams.fromString(expression);
 			ITokenSource lexer = new MathLexer(stream);
