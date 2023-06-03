@@ -1,9 +1,7 @@
 ﻿grammar Assignment5;
 
 statements    
-    : (NEWLINE* statement)* NEWLINE*
-    | NEWLINE*
-    | EOF
+    : statement*
     ;
     
 statement
@@ -16,7 +14,7 @@ statement
     ;
     
 functionDeclaration
-    : 'function' functionName expression (',' expression)* statementBlock
+    : 'function' functionName (expression ','?)* statementBlock
     ;  
       
 functionCall
@@ -24,7 +22,7 @@ functionCall
     ;
     
 ifStatement
-    : 'if' booleanExpression statementBlock NEWLINE? elseBlock?
+    : 'if' booleanExpression statementBlock elseBlock?
     ;
     
 elseBlock
@@ -36,8 +34,7 @@ whileStatement
     ;
 
 statementBlock
-    : '{' NEWLINE statements returnStatement? NEWLINE '}'
-    | '{' NEWLINE* '}' // empty
+    : '{' statements returnStatement? '}'
     ;
     
 returnStatement
@@ -76,8 +73,8 @@ KW_PRINT        : 'print';
 COMP_OPERATOR   : '>' | '>=' | '<' | '<=' | '==' | '!=' ;
 NUMBER          : NONZERO_DIGIT DIGIT* | ZERO;
 IDENT           : LETTER (LETTER | DIGIT)*;
-NEWLINE         : '\r'? '\n';
-WHITESPACE      : [ \t]+ -> skip;
+//NEWLINE         : '\r'? '\n';
+WHITESPACE      : [ \t\n\r]+ -> skip;
 
 fragment NONZERO_DIGIT  : [1-9];
 fragment ZERO           : '0';
