@@ -10,10 +10,10 @@ public class IntegralExpressionVisitor : CalculatorBaseVisitor<int>
 	public IntegralExpressionVisitor(IDictionary<string, int> variableValues)
 	{
 		_variableValues = variableValues;
-	}	
-	
+	}
+
 	public override int VisitLiteral(CalculatorParser.LiteralContext context) => int.Parse(context.GetText());
-	
+
 	public override int VisitNestedVar(CalculatorParser.NestedVarContext context) => _variableValues[context.IDENT().GetText()];
 
 	public override int VisitFactorial(CalculatorParser.FactorialContext context) => Factorial(Visit(context.expression()));
@@ -24,18 +24,18 @@ public class IntegralExpressionVisitor : CalculatorBaseVisitor<int>
 		int rhs = Visit(context.expression(1));
 		string op = context.op.Text;
 		return op switch
-		{
-			"+" => lhs + rhs,
-			"-" => lhs - rhs,
-			"*" => lhs * rhs,
-			"/" => lhs / rhs,
-			"^" => (int) Pow(lhs, rhs),
-			_   => throw new ArgumentException($"Unknown binary operator {op}")
-		};
+		       {
+			       "+" => lhs + rhs,
+			       "-" => lhs - rhs,
+			       "*" => lhs * rhs,
+			       "/" => lhs / rhs,
+			       "^" => (int) Pow(lhs, rhs),
+			       _   => throw new ArgumentException($"Unknown binary operator {op}")
+		       };
 	}
 
 	public override int VisitParenthesizedExpression(CalculatorParser.ParenthesizedExpressionContext context) =>
 		Visit(context.expression());
-	
+
 	private static int Factorial(int n) => Enumerable.Range(1, n).Aggregate(1, (acc, i) => acc * i);
 }
