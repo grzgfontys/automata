@@ -1,7 +1,7 @@
 ﻿grammar Assignment5;
 
 statements    
-    : statement*
+    : statement* 
     ;
     
 statement
