@@ -41,7 +41,7 @@ statementBlock
     ;
     
 returnStatement
-    : 'return' expression?
+    : 'return' (expression | statement)?
     ;
 
 variableAssignment
