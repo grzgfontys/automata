@@ -20,7 +20,7 @@ functionDeclaration
     ;  
       
 functionCall
-    : functionName '(' (expression ','?)+ ')'
+    : functionName '(' (expression ','?)* ')'
     ;
     
 ifStatement
@@ -41,7 +41,7 @@ statementBlock
     ;
     
 returnStatement
-    : 'return' (expression | statement)?
+    : 'return' expression?
     ;
 
 variableAssignment
