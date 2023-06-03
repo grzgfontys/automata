@@ -1,7 +1,7 @@
 ﻿grammar Assignment5;
 
 statements    
-    : (NEWLINE* statement)* NEWLINE* returnStatement*
+    : (NEWLINE* statement)* NEWLINE*
     | NEWLINE*
     | EOF
     ;
@@ -9,7 +9,7 @@ statements
 statement
     : functionDeclaration
     | functionCall
-//    | returnStatement
+    | returnStatement
     | ifStatement
     | whileStatement                             
     | variableAssignment
@@ -36,9 +36,8 @@ whileStatement
     ;
 
 statementBlock
-//    : '{' NEWLINE statements returnStatement? NEWLINE '}'
     : '{' NEWLINE statements returnStatement? NEWLINE '}'
-    | '{' NEWLINE? '}' // empty
+    | '{' NEWLINE* '}' // empty
     ;
     
 returnStatement
