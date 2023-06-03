@@ -1,12 +1,9 @@
 grammar Calculator;
 
-file
-    : statements EOF
-    ;
-
-statementBlock
-    : '{' NEWLINE statements NEWLINE '}'
-    | '{' NEWLINE? '}' // empty
+statements    
+    : NEWLINE* statement (NEWLINE+ statement)* NEWLINE*
+    | NEWLINE*
+    | EOF
     ;
     
 statement
@@ -27,10 +24,10 @@ elseBlock
 whileStatement
     : 'while' booleanExpression statementBlock
     ;
-    
-statements
-    : NEWLINE* statement (NEWLINE+ statement)* NEWLINE*
-    | NEWLINE*
+
+statementBlock
+    : '{' NEWLINE statements NEWLINE '}'
+    | '{' NEWLINE? '}' // empty
     ;
     
 functionCall

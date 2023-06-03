@@ -12,9 +12,6 @@ public class BooleanExpressionVisitor : CalculatorBaseVisitor<bool>
 		_intVisitor = intVisitor;
 	}
 
-	public override bool VisitParenthesizedBooleanExpression(CalculatorParser.ParenthesizedBooleanExpressionContext context) =>
-		Visit(context.booleanExpression());
-
 	public override bool VisitComparison(CalculatorParser.ComparisonContext context)
 	{
 		int lhs = _intVisitor.Visit(context.expression(0));
@@ -41,4 +38,7 @@ public class BooleanExpressionVisitor : CalculatorBaseVisitor<bool>
 
 	public override bool VisitLogicalOr(CalculatorParser.LogicalOrContext context) =>
 		Visit(context.booleanExpression(0)) || Visit(context.booleanExpression(1));
+
+	public override bool VisitParenthesizedBooleanExpression(CalculatorParser.ParenthesizedBooleanExpressionContext context) =>
+		Visit(context.booleanExpression());
 }

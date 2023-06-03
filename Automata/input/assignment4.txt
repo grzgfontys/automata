@@ -11,6 +11,7 @@ if n == 0 {
         a = b
         b = next
         i = i + 1
+        print(b)
     }
     print(b)
 }

@@ -59,7 +59,7 @@ public static class Program
 		ITokenSource lexer = new CalculatorLexer( stream );
 		CommonTokenStream tokens = new( lexer );
 		CalculatorParser parser = new( tokens );
-		IParseTree tree = parser.file();
+		IParseTree tree = parser.statements();
 		
 		var calculator = new  Calculator();
 		calculator.Visit(tree);
