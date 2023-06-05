@@ -2,6 +2,8 @@
 using System.Net.Mail;
 using Antlr4.Runtime.Tree;
 // using Grammar.Assignment5;
+using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 
 namespace Automata.Parsing.Assignment5;
 
@@ -9,7 +11,8 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 {
 	private readonly IDictionary<string, int> _variableValues = new Dictionary<string, int>();
 	private readonly HashSet<string> _variableInit = new HashSet<string>();
-	// private readonly IDictionary<IRuleNode, IDictionary<string, int>> _functionsVariables = new Dictionary<IRuleNode, IDictionary<string, int>>();
+	private IDictionary<string, int> _functionsVariables = new Dictionary<string, int>();
+	private IDictionary<string, IRuleNode> _functionsContexts = new Dictionary<string, IRuleNode>();
 	private readonly IDictionary<string, List<Tuple<string,int?>>> _declaredFunctions = new Dictionary<string, List<Tuple<string,int?>>>();
 	private readonly IAssignment5Visitor<int> _intVisitor;
 	private readonly IAssignment5Visitor<bool> _boolVisitor;
@@ -33,6 +36,19 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	{
 		_intVisitor = new IntegralExpressionVisitor(_variableValues);
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
+	}
+
+	public Assignment5CustomVisitor(IDictionary<string, int> variableValues)
+	{
+		_variableValues = variableValues;
+		_intVisitor = new IntegralExpressionVisitor(_variableValues);
+		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
+	}
+	
+	private void HelperVisitor(IRuleNode scopedStatementBlockContext, IDictionary<string, int> variableValues)
+	{
+		var visitor = new  Assignment5CustomVisitor(variableValues);
+		visitor.Visit(scopedStatementBlockContext);
 	}
 
 	public override object? VisitIfStatement(Assignment5Parser.IfStatementContext context)
@@ -69,13 +85,14 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 			Console.WriteLine(_intVisitor.Visit(expression));
 		}
 	}
-	private void HandleUserFunction(string funName, IEnumerable<Assignment5Parser.ExpressionContext> expressions)
+	private Dictionary<string, int> HandleUserFunction(string funName, IEnumerable<Assignment5Parser.ExpressionContext> expressions)
 	{
 		List<Assignment5Parser.ExpressionContext> expressionsList = expressions.ToList();
+		Dictionary<string, int> functionsVariables = new ();
 		if(!_declaredFunctions.ContainsKey(funName))
 		{
 			throw new UnreachableException($"Function {funName} does not exist");
-		}
+		} 
 		else if(_declaredFunctions[funName].Count < expressionsList.Count)
 		{
 			
@@ -83,11 +100,10 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		}
 		else
 		{
-			List<int> funValues = new ();
 			int j = 0;
 			for (int i = 0; i < expressionsList.Count; i++)
 			{
-				funValues.Add(_intVisitor.Visit(expressionsList[i]));
+				functionsVariables[_declaredFunctions[funName][i].Item1] = _intVisitor.Visit(expressionsList[i]);
 				j = i;
 			}
 
@@ -100,7 +116,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 					int? defaultParam = _declaredFunctions[funName][i].Item2;
 					if (defaultParam.HasValue)
 					{
-						funValues.Add(defaultParam.Value);
+						functionsVariables[_declaredFunctions[funName][i].Item1] = defaultParam.Value;
 					}
 					else
 					{
@@ -109,6 +125,8 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 					j = i;
 				}
 			}
+
+			return functionsVariables;
 		}
 	}
 
@@ -148,6 +166,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	{
 		string functionName = context.functionName().GetText();
 		_declaredFunctions[functionName] = new List<Tuple<string,int?>>();
+		_functionsContexts[functionName] = context.statementBlock();
 
 		var paramsCount = context.functionParams().Length;
 
@@ -184,7 +203,10 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 				HandlePrintFunction(context.expression());
 				break;
 			case Assignment5Parser.IDENT:
-				HandleUserFunction(context.functionName().IDENT().GetText(), context.expression());
+				_functionsVariables = HandleUserFunction(context.functionName().IDENT().GetText(), context.expression());
+				// this.Visit(_functionsContexts[context.functionName().IDENT().GetText()]);
+				this.HelperVisitor(_functionsContexts[context.functionName().IDENT().GetText()], _functionsVariables);
+				_functionsVariables.Clear();
 				break;
 			default:
 				throw new UnreachableException($"Unknown keyword: {keyword.Text}");

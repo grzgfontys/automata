@@ -4,6 +4,10 @@ print(aa, aa)
 
 function test aa, aaa, cc = 10{}
 
+function iloraz bb, cc = 15{
+    print(bb*cc)
+}
+
 test(aa, 2+2)
 
 n = 10
@@ -20,6 +24,7 @@ if n == 0 {
         b = next
         i = i + 1
         print(b)
+        iloraz(3, 5)
     }
     print(b)
 }
