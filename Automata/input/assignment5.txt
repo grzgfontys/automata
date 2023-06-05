@@ -1,25 +1,25 @@
-n = 10
-function test 33, aa, aaa{
-    aa = 22
-    if n == 0 {
-        print(0)
-        return 32
-    } else {
-        i = 2
-        while i <= n {
-            next = a + b
-            a = b
-            b = next
-            i = i + 1
-            print(b)
-        }
-        print(b)
-    }
-    return 32
-}
+aa = 4
+bb
+print(aa, aa)
 
-test(a3a3, aaa)
+function test aa, aaa, cc = 10{}
+
+test(aa, 2+2)
+
+n = 10
+
 a = 0
 b = 1
-
-return 33
+if n == 0 {
+    print(0)
+} else {
+    i = 2
+    while i <= n {
+        next = a + b
+        a = b
+        b = next
+        i = i + 1
+        print(b)
+    }
+    print(b)
+}

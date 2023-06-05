@@ -1,7 +1,7 @@
-﻿grammar Assignment5;
+grammar Assignment5;
 
 statements    
-    : statement* 
+    : statement*
     ;
     
 statement
@@ -10,12 +10,17 @@ statement
     | returnStatement
     | ifStatement
     | whileStatement                             
-    | variableAssignment
+    | variableDeclaration
     ;
     
 functionDeclaration
-    : 'function' functionName (expression ','?)* statementBlock
+    : 'function' functionName (functionParams ','?)* statementBlock
     ;  
+    
+functionParams
+    : IDENT '=' expression              # DefaultParam
+    | IDENT                             # Param
+    ;
       
 functionCall
     : functionName '(' (expression ','?)* ')'
@@ -41,8 +46,9 @@ returnStatement
     : 'return' expression?
     ;
 
-variableAssignment
-    : IDENT '=' expression           
+variableDeclaration
+    : IDENT '=' expression              # VariableAssignment
+    | IDENT                             # Initialisation
     ;
     
 booleanExpression
