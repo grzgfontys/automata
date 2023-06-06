@@ -172,19 +172,33 @@ public partial class Assignment5BaseListener : IAssignment5Listener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitReturnStatement([NotNull] Assignment5Parser.ReturnStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>VariableAssignment</c>
+	/// Enter a parse tree produced by the <c>ExpressionAssignment</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVariableAssignment([NotNull] Assignment5Parser.VariableAssignmentContext context) { }
+	public virtual void EnterExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>VariableAssignment</c>
+	/// Exit a parse tree produced by the <c>ExpressionAssignment</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVariableAssignment([NotNull] Assignment5Parser.VariableAssignmentContext context) { }
+	public virtual void ExitExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionAssignment</c>
+	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionAssignment([NotNull] Assignment5Parser.FunctionAssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionAssignment</c>
+	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionAssignment([NotNull] Assignment5Parser.FunctionAssignmentContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Initialisation</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.

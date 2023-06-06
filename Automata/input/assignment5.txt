@@ -4,9 +4,15 @@ print(aa, aa)
 
 function test aa, aaa, cc = 10{}
 
+
 function iloraz bb, cc = 15{
     print(bb*cc)
+    return bb-cc
+    print(777)
 }
+
+aa = iloraz(10)
+print(aa)
 
 test(aa, 2+2)
 

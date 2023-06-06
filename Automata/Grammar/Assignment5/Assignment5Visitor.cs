@@ -100,12 +100,19 @@ public interface IAssignment5Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitReturnStatement([NotNull] Assignment5Parser.ReturnStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>VariableAssignment</c>
+	/// Visit a parse tree produced by the <c>ExpressionAssignment</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitVariableAssignment([NotNull] Assignment5Parser.VariableAssignmentContext context);
+	Result VisitExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionAssignment</c>
+	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionAssignment([NotNull] Assignment5Parser.FunctionAssignmentContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>Initialisation</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.

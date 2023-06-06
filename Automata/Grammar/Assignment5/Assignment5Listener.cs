@@ -145,17 +145,29 @@ public interface IAssignment5Listener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitReturnStatement([NotNull] Assignment5Parser.ReturnStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>VariableAssignment</c>
+	/// Enter a parse tree produced by the <c>ExpressionAssignment</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterVariableAssignment([NotNull] Assignment5Parser.VariableAssignmentContext context);
+	void EnterExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>VariableAssignment</c>
+	/// Exit a parse tree produced by the <c>ExpressionAssignment</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitVariableAssignment([NotNull] Assignment5Parser.VariableAssignmentContext context);
+	void ExitExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FunctionAssignment</c>
+	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionAssignment([NotNull] Assignment5Parser.FunctionAssignmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FunctionAssignment</c>
+	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionAssignment([NotNull] Assignment5Parser.FunctionAssignmentContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Initialisation</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.

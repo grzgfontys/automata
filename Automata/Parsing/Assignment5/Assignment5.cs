@@ -45,10 +45,10 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
 	}
 	
-	private void HelperVisitor(IRuleNode scopedStatementBlockContext, IDictionary<string, int> variableValues)
+	private object? HelperVisitor(IRuleNode scopedStatementBlockContext, IDictionary<string, int> variableValues)
 	{
 		var visitor = new  Assignment5CustomVisitor(variableValues);
-		visitor.Visit(scopedStatementBlockContext);
+		return visitor.Visit(scopedStatementBlockContext);
 	}
 
 	public override object? VisitIfStatement(Assignment5Parser.IfStatementContext context)
@@ -138,12 +138,24 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		return null;
 	}
 
-	public override object? VisitVariableAssignment(Assignment5Parser.VariableAssignmentContext context)
+	public override object? VisitExpressionAssignment(Assignment5Parser.ExpressionAssignmentContext context)
 	{
 		string varName = context.IDENT().GetText();
 		int value = _intVisitor.Visit(context.expression());
 
 		_variableValues[varName] = value;
+		return null;
+	}
+	
+	public override object? VisitFunctionAssignment(Assignment5Parser.FunctionAssignmentContext context)
+	{
+		string varName = context.IDENT().GetText();
+		var value = this.Visit(context.functionCall());
+
+		if (value is int)
+		{
+			_variableValues[varName] = (int)value;
+		}
 		return null;
 	}
 
@@ -168,7 +180,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		_declaredFunctions[functionName] = new List<Tuple<string,int?>>();
 		_functionsContexts[functionName] = context.statementBlock();
 
-		var paramsCount = context.functionParams().Length;
+		var paramsCount = context.functionParams().Length; 
 
 		for (int i = 0; i < paramsCount; i++)
 		{
@@ -182,20 +194,6 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	public override object? VisitFunctionCall(Assignment5Parser.FunctionCallContext context)
 	{
-		
-		// string functionName = context.functionName().GetText();
-		// _declaredFunctions[functionName] = new HashSet<string>();
-		// int childCount = context.expression().Length;
-		//
-		// for (int i = 0; i < childCount; i++)
-		// {
-		// 	_declaredFunctions[functionName].Add(context.expression(i).GetText());
-		// 	Console.WriteLine(context.expression(i).GetType());
-		// 	if (context.expression(i).GetType() == typeof(Assignment5Parser.NestedVarContext))
-		// 	{
-		// 		Console.WriteLine(context.expression(i).GetText());
-		// 	}
-		// }
 		var keyword = context.functionName().Start;
 		switch ( keyword.Type )
 		{
@@ -205,11 +203,26 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 			case Assignment5Parser.IDENT:
 				_functionsVariables = HandleUserFunction(context.functionName().IDENT().GetText(), context.expression());
 				// this.Visit(_functionsContexts[context.functionName().IDENT().GetText()]);
-				this.HelperVisitor(_functionsContexts[context.functionName().IDENT().GetText()], _functionsVariables);
+				var value = this.HelperVisitor(_functionsContexts[context.functionName().IDENT().GetText()], _functionsVariables);
 				_functionsVariables.Clear();
+				return value;
 				break;
 			default:
 				throw new UnreachableException($"Unknown keyword: {keyword.Text}");
+		}
+		return null;
+	}
+	
+	public override object? VisitStatementBlock(Assignment5Parser.StatementBlockContext context)
+	{
+		int childCount = context.ChildCount;
+		for (int i = 0; i < childCount; ++i)
+		{
+			if(context.GetChild(i).GetType() == typeof(Assignment5Parser.ReturnStatementContext))
+			{
+				return this.Visit(context.GetChild(i));
+			}
+			this.Visit(context.GetChild(i));
 		}
 		return null;
 	}

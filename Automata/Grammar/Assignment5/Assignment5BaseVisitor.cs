@@ -147,7 +147,7 @@ public partial class Assignment5BaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// <return>The visitor result.</return>
 	public virtual Result VisitReturnStatement([NotNull] Assignment5Parser.ReturnStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>VariableAssignment</c>
+	/// Visit a parse tree produced by the <c>ExpressionAssignment</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -156,7 +156,18 @@ public partial class Assignment5BaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitVariableAssignment([NotNull] Assignment5Parser.VariableAssignmentContext context) { return VisitChildren(context); }
+	public virtual Result VisitExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionAssignment</c>
+	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitFunctionAssignment([NotNull] Assignment5Parser.FunctionAssignmentContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>Initialisation</c>
 	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.

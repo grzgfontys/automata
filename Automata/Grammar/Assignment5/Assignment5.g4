@@ -7,7 +7,7 @@ statements
 statement
     : functionDeclaration
     | functionCall
-    | returnStatement
+//    | returnStatement
     | ifStatement
     | whileStatement                             
     | variableDeclaration
@@ -39,7 +39,8 @@ whileStatement
     ;
 
 statementBlock
-    : '{' statements returnStatement? '}'
+    : '{' statement* (returnStatement | statement)* '}'
+//    | '{' statement* (returnStatement | statement?)* '}'
     ;
     
 returnStatement
@@ -47,7 +48,8 @@ returnStatement
     ;
 
 variableDeclaration
-    : IDENT '=' expression              # VariableAssignment
+    : IDENT '=' expression              # ExpressionAssignment
+    | IDENT '=' functionCall            # FunctionAssignment
     | IDENT                             # Initialisation
     ;
     
