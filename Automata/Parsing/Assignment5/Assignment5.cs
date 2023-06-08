@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Net.Mail;
 using Antlr4.Runtime.Tree;
 // using Grammar.Assignment5;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
 
 namespace Automata.Parsing.Assignment5;
 
@@ -12,23 +9,25 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	private readonly IDictionary<string, int> _variableValues = new Dictionary<string, int>();
 	private readonly HashSet<string> _variableInit = new HashSet<string>();
 	private IDictionary<string, int> _functionsVariables = new Dictionary<string, int>();
-	private IDictionary<string, IRuleNode> _functionsContexts = new Dictionary<string, IRuleNode>();
+	// Stores function context for executing code inside the function by name of function
+	private readonly IDictionary<string, IRuleNode> _functionsContexts = new Dictionary<string, IRuleNode>();
+	// Stores names of function, then in list are parameters for function, one parameter in tuple name and value
 	private readonly IDictionary<string, List<Tuple<string,int?>>> _declaredFunctions = new Dictionary<string, List<Tuple<string,int?>>>();
 	private readonly IAssignment5Visitor<int> _intVisitor;
 	private readonly IAssignment5Visitor<bool> _boolVisitor;
 
 	class FunParam
 	{
-		public string name;
-		public int? value = null;
+		public readonly string Name;
+		public readonly int? Value;
 		public FunParam(string name, int value)
 		{
-			this.name = name;
-			this.value = value;
+			this.Name = name;
+			this.Value = value;
 		}
 		public FunParam(string name)
 		{
-			this.name = name;
+			this.Name = name;
 		}
 	}
 
@@ -122,7 +121,6 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 					{
 						throw new UnreachableException($"Function {funName} takes more parameters");
 					}
-					j = i;
 				}
 			}
 
@@ -159,7 +157,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		return null;
 	}
 
-	public override object? VisitDefaultParam(Assignment5Parser.DefaultParamContext context)
+	public override object VisitDefaultParam(Assignment5Parser.DefaultParamContext context)
 	{
 		string paramName = context.IDENT().GetText();
 		int paramValue = _intVisitor.Visit(context.expression());
@@ -167,7 +165,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		return new FunParam(paramName, paramValue);
 	}
 
-	public override object? VisitParam(Assignment5Parser.ParamContext context)
+	public override object VisitParam(Assignment5Parser.ParamContext context)
 	{
 		string paramName = context.IDENT().GetText();
 		
@@ -185,7 +183,8 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		for (int i = 0; i < paramsCount; i++)
 		{
 			FunParam funParam = (FunParam)this.Visit(context.functionParams(i));
-			_declaredFunctions[functionName].Add(new Tuple<string, int?>(funParam.name, funParam.value));
+			if (funParam != null)
+				_declaredFunctions[functionName].Add(new Tuple<string, int?>(funParam.Name, funParam.Value));
 		}
 
 		Console.WriteLine(String.Join(",", _declaredFunctions[functionName]));
@@ -206,7 +205,6 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 				var value = this.HelperVisitor(_functionsContexts[context.functionName().IDENT().GetText()], _functionsVariables);
 				_functionsVariables.Clear();
 				return value;
-				break;
 			default:
 				throw new UnreachableException($"Unknown keyword: {keyword.Text}");
 		}
