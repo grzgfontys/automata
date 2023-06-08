@@ -1,0 +1,10 @@
+function double(x) {
+    print(x)
+    return 2*x
+    return 69
+}
+
+x = 2
+y = 4
+z = double(x) + double(y)
+print(z)
