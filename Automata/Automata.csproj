@@ -6,21 +6,32 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    
+
     <PropertyGroup>
+        <!-- Supress the "CLSCompliant attribute not needed" warning 
+        The warning is supressed because the antlr tool automatically generates this attribute. -->
         <NoWarn>3021</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.12.0" />
+        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.12.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="./**/*.tokens" />
-        <None Remove="./**/*.interp" />
-        
+
+        <!-- Make antlr files not show in the editor -->
+        <Content Include="./**/*.tokens;./**/*.interp">
+            <Visible>false</Visible>
+        </Content>
+
         <None Update="input/*">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <!-- Make submissions folder visible in the editor -->
+        <None Include="../Submissions/**">
+            <Link>Submissions/%(RecursiveDir)%(Filename)</Link>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 
