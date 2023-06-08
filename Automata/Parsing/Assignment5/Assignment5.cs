@@ -131,14 +131,13 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	public override object? VisitStatementBlock(Assignment5Parser.StatementBlockContext context)
 	{
-		int childCount = context.ChildCount;
-		for ( int i = 0; i < childCount; ++i )
+		foreach ( var statement in context.statement() )
 		{
-			if ( context.GetChild(i) is Assignment5Parser.ReturnStatementContext )
+			if ( statement.returnStatement() is not null )
 			{
-				return Visit(context.GetChild(i));
+				return Visit(statement);
 			}
-			Visit(context.GetChild(i));
+			Visit(statement);
 		}
 		return null;
 	}
