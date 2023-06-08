@@ -328,6 +328,8 @@ public partial class Assignment5Parser : Parser {
 	}
 
 	public partial class FunctionParametersContext : ParserRuleContext {
+		public IToken _IDENT;
+		public IList<IToken> _param = new List<IToken>();
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] IDENT() { return GetTokens(Assignment5Parser.IDENT); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENT(int i) {
 			return GetToken(Assignment5Parser.IDENT, i);
@@ -371,7 +373,8 @@ public partial class Assignment5Parser : Parser {
 			if (_la==IDENT) {
 				{
 				State = 50;
-				Match(IDENT);
+				_localctx._IDENT = Match(IDENT);
+				_localctx._param.Add(_localctx._IDENT);
 				State = 55;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
@@ -381,7 +384,8 @@ public partial class Assignment5Parser : Parser {
 					State = 51;
 					Match(T__2);
 					State = 52;
-					Match(IDENT);
+					_localctx._IDENT = Match(IDENT);
+					_localctx._param.Add(_localctx._IDENT);
 					}
 					}
 					State = 57;
