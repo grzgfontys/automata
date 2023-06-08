@@ -37,7 +37,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
 	}
 
-	public Assignment5CustomVisitor(IDictionary<string, int> variableValues)
+	private Assignment5CustomVisitor(IDictionary<string, int> variableValues)
 	{
 		_variableValues = variableValues;
 		_intVisitor = new IntegralExpressionVisitor(_variableValues);
@@ -131,8 +131,14 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	public override object? VisitInitialisation(Assignment5Parser.InitialisationContext context)
 	{
 		string varName = context.IDENT().GetText();
-
-		_variableInit.Add(varName);
+		if (!_variableInit.Contains(varName) && !_variableValues.ContainsKey(varName))
+		{
+			_variableInit.Add(varName);
+		}
+		else
+		{
+			throw new UnreachableException($"Second initialization of variable: {varName}");
+		}
 		return null;
 	}
 
@@ -150,9 +156,9 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		string varName = context.IDENT().GetText();
 		var value = this.Visit(context.functionCall());
 
-		if (value is int)
+		if (value is int intValue)
 		{
-			_variableValues[varName] = (int)value;
+			_variableValues[varName] = intValue;
 		}
 		return null;
 	}
@@ -182,7 +188,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 		for (int i = 0; i < paramsCount; i++)
 		{
-			FunParam funParam = (FunParam)this.Visit(context.functionParams(i));
+			FunParam? funParam = (FunParam?)Visit(context.functionParams(i));
 			if (funParam != null)
 				_declaredFunctions[functionName].Add(new Tuple<string, int?>(funParam.Name, funParam.Value));
 		}
