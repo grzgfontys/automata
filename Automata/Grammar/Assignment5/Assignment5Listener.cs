@@ -142,29 +142,15 @@ public interface IAssignment5Listener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitReturnStatement([NotNull] Assignment5Parser.ReturnStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ExpressionAssignment</c>
-	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// Enter a parse tree produced by <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context);
+	void EnterVariableDeclaration([NotNull] Assignment5Parser.VariableDeclarationContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ExpressionAssignment</c>
-	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
+	/// Exit a parse tree produced by <see cref="Assignment5Parser.variableDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExpressionAssignment([NotNull] Assignment5Parser.ExpressionAssignmentContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>Initialisation</c>
-	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterInitialisation([NotNull] Assignment5Parser.InitialisationContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>Initialisation</c>
-	/// labeled alternative in <see cref="Assignment5Parser.variableDeclaration"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitInitialisation([NotNull] Assignment5Parser.InitialisationContext context);
+	void ExitVariableDeclaration([NotNull] Assignment5Parser.VariableDeclarationContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Negation</c>
 	/// labeled alternative in <see cref="Assignment5Parser.booleanExpression"/>.
