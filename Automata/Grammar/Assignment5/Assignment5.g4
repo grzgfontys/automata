@@ -14,15 +14,15 @@ statement
     ;
     
 functionDeclaration
-    : 'function' functionName functionParameters statementBlock
+    : 'function' IDENT functionParameters statementBlock
     ;
 
 functionParameters
-    : '(' (IDENT (',' IDENT)* )? ')'
+    : '(' (params+=IDENT (',' params+=IDENT)* )? ')'
     ;
       
 functionCall
-    : functionName functionArguments
+    : IDENT functionArguments
     ;
     
 functionArguments
@@ -50,8 +50,7 @@ returnStatement
     ;
 
 variableDeclaration
-    : IDENT '=' expression              # ExpressionAssignment
-    | IDENT                             # Initialisation
+    : IDENT '=' expression              
     ;
     
 booleanExpression
@@ -73,13 +72,7 @@ expression
     | '(' expression ')'                            # ParenthesizedExpression
     ;
     
-functionName
-    : KW_PRINT
-    | IDENT
-    ;
 
-
-KW_PRINT        : 'print';
 COMP_OPERATOR   : '>' | '>=' | '<' | '<=' | '==' | '!=' ;
 NUMBER          : NONZERO_DIGIT DIGIT* | ZERO;
 IDENT           : LETTER (LETTER | DIGIT)*;
