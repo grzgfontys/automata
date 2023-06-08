@@ -7,23 +7,26 @@ statements
 statement
     : functionDeclaration
     | functionCall
-//    | returnStatement
+    | returnStatement
     | ifStatement
     | whileStatement                             
     | variableDeclaration
     ;
     
 functionDeclaration
-    : 'function' functionName (functionParams ','?)* statementBlock
-    ;  
-    
-functionParams
-    : IDENT '=' expression              # DefaultParam
-    | IDENT                             # Param
+    : 'function' functionName functionParameters statementBlock
+    ;
+
+functionParameters
+    : '(' (IDENT (',' IDENT)* )? ')'
     ;
       
 functionCall
-    : functionName '(' (expression ','?)* ')'
+    : functionName functionArguments
+    ;
+    
+functionArguments
+    : '(' (expression (',' expression)* )? ')'
     ;
     
 ifStatement
@@ -39,8 +42,7 @@ whileStatement
     ;
 
 statementBlock
-    : '{' statement* (returnStatement | statement)* '}'
-//    | '{' statement* (returnStatement | statement?)* '}'
+    : '{' statement* '}'
     ;
     
 returnStatement
@@ -49,7 +51,6 @@ returnStatement
 
 variableDeclaration
     : IDENT '=' expression              # ExpressionAssignment
-    | IDENT '=' functionCall            # FunctionAssignment
     | IDENT                             # Initialisation
     ;
     
@@ -64,6 +65,7 @@ booleanExpression
 expression 
     : NUMBER                                        # Literal
     | IDENT                                         # NestedVar
+    | functionCall                                  # FunctionCallExpression
     | expression '!'                                # Factorial
     | <assoc=right> expression op='^' expression    # BinaryOperation
     | expression op=('*'|'/') expression            # BinaryOperation
