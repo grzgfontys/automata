@@ -181,11 +181,5 @@ public interface IAssignment5Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitFunctionCallExpression([NotNull] Assignment5Parser.FunctionCallExpressionContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="Assignment5Parser.functionName"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunctionName([NotNull] Assignment5Parser.FunctionNameContext context);
 }
 } // namespace Grammar.Assignment5

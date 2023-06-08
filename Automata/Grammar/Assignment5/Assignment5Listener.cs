@@ -283,15 +283,5 @@ public interface IAssignment5Listener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionCallExpression([NotNull] Assignment5Parser.FunctionCallExpressionContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="Assignment5Parser.functionName"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFunctionName([NotNull] Assignment5Parser.FunctionNameContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="Assignment5Parser.functionName"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFunctionName([NotNull] Assignment5Parser.FunctionNameContext context);
 }
 } // namespace Grammar.Assignment5

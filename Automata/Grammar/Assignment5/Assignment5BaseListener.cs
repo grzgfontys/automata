@@ -334,18 +334,6 @@ public partial class Assignment5BaseListener : IAssignment5Listener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionCallExpression([NotNull] Assignment5Parser.FunctionCallExpressionContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="Assignment5Parser.functionName"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionName([NotNull] Assignment5Parser.FunctionNameContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="Assignment5Parser.functionName"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionName([NotNull] Assignment5Parser.FunctionNameContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
