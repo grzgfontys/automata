@@ -1,50 +1,36 @@
-﻿using System.Diagnostics;
-using Antlr4.Runtime.Tree;
-
-// using Grammar.Assignment5;
+﻿using Grammar.Assignment5;
 
 namespace Automata.Parsing.Assignment5;
 
 public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nullable object because we do not return any value
 {
-	private readonly IDictionary<string, int> _variableValues = new Dictionary<string, int>();
-	private readonly HashSet<string> _variableInit = new();
+	private readonly Stack<IDictionary<string, int>> _variableContexts = new();
+	private IDictionary<string, int> LocalVariableContext => _variableContexts.Peek();
 
-	private IDictionary<string, int> _functionsVariables = new Dictionary<string, int>();
+	// ReSharper disable once NotAccessedPositionalProperty.Local
+	private record FunctionDeclaration(string Name,
+	                                   IReadOnlyList<string> Parameters,
+	                                   Assignment5Parser.StatementBlockContext Body)
+	{
+		public int ArgumentCount => Parameters.Count;
+	}
 
-	// Stores function context for executing code inside the function by name of function
-	private readonly IDictionary<string, IRuleNode> _functionsContexts = new Dictionary<string, IRuleNode>();
-
-	// Stores names of function, then in list are parameters for function, one parameter in tuple name and value
-	private readonly IDictionary<string, List<Tuple<string, int?>>> _declaredFunctions =
-		new Dictionary<string, List<Tuple<string, int?>>>();
+	private readonly IDictionary<string, FunctionDeclaration> _functionDeclarations =
+		new Dictionary<string, FunctionDeclaration>();
 
 	private readonly IAssignment5Visitor<int> _intVisitor;
 	private readonly IAssignment5Visitor<bool> _boolVisitor;
-
-	private class FunParam
-	{
-		public required string Name { get; init; }
-		public int? Value { get; init; }
-	}
+	private int? _returnValue;
+	private int ReturnValue => _returnValue
+	                           ?? throw new
+		                           InvalidOperationException("It is not allowed to access the return value when it was not set");
 
 	public Assignment5CustomVisitor()
 	{
-		_intVisitor = new IntegralExpressionVisitor(_variableValues);
+		_intVisitor = new IntegralExpressionVisitor(() => LocalVariableContext, () => ReturnValue, this);
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
-	}
 
-	private Assignment5CustomVisitor(IDictionary<string, int> variableValues)
-	{
-		_variableValues = variableValues;
-		_intVisitor = new IntegralExpressionVisitor(_variableValues);
-		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
-	}
-
-	private static object? HelperVisitor(IParseTree scopedStatementBlockContext, IDictionary<string, int> variableValues)
-	{
-		var visitor = new Assignment5CustomVisitor(variableValues);
-		return visitor.Visit(scopedStatementBlockContext);
+		_variableContexts.Push(new Dictionary<string, int>());
 	}
 
 	public override object? VisitIfStatement(Assignment5Parser.IfStatementContext context)
@@ -82,138 +68,63 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		}
 	}
 
-	private Dictionary<string, int> HandleUserFunction(string funName,
-	                                                   IEnumerable<Assignment5Parser.ExpressionContext> expressions)
+	private void HandleUserFunction(string funName,
+	                                IEnumerable<Assignment5Parser.ExpressionContext> expressions)
 	{
-		var expressionsList = expressions.ToList();
-		Dictionary<string, int> functionsVariables = new();
-		if ( !_declaredFunctions.ContainsKey(funName) )
+		if ( !_functionDeclarations.TryGetValue(funName, out var functionDeclaration) )
 		{
-			// TODO: This is not unreachable exception
-			throw new UnreachableException($"Function {funName} does not exist");
+			throw new KeyNotFoundException($"Function {funName} not defined when called");
 		}
-		if ( _declaredFunctions[funName].Count < expressionsList.Count )
+		var arguments = expressions.ToList();
+		if ( functionDeclaration.ArgumentCount != arguments.Count )
 		{
-			// TODO: This is not unreachable exception
-			throw new UnreachableException($"Function {funName} takes less parameters");
+			throw new
+				Exception($"Function {funName} expects {functionDeclaration.ArgumentCount} arguments, but {arguments.Count} were given");
 		}
-		int j = 0;
-		for ( int i = 0; i < expressionsList.Count; i++ )
+		Dictionary<string, int> newVariableContext = new();
+		for ( var i = 0; i < arguments.Count; i++ )
 		{
-			functionsVariables[_declaredFunctions[funName][i].Item1] = _intVisitor.Visit(expressionsList[i]);
-			j = i;
-		}
-
-		j++;
-
-		if ( j >= _declaredFunctions[funName].Count )
-			return functionsVariables;
-
-		for ( int i = j; i < _declaredFunctions[funName].Count; i++ )
-		{
-			int? defaultParam = _declaredFunctions[funName][i].Item2;
-			if ( defaultParam.HasValue )
-			{
-				functionsVariables[_declaredFunctions[funName][i].Item1] = defaultParam.Value;
-			}
-			else
-			{
-				// TODO: This is not unreachable exception
-				throw new UnreachableException($"Function {funName} takes more parameters");
-			}
+			string varName = functionDeclaration.Parameters[i];
+			int value = _intVisitor.Visit(arguments[i]);
+			newVariableContext[varName] = value;
 		}
 
-		return functionsVariables;
+		_variableContexts.Push(newVariableContext);
+		Visit(functionDeclaration.Body);
+		_variableContexts.Pop();
 	}
 
-	public override object? VisitInitialisation(Assignment5Parser.InitialisationContext context)
-	{
-		string varName = context.IDENT().GetText();
-		if ( !_variableInit.Contains(varName) && !_variableValues.ContainsKey(varName) )
-		{
-			_variableInit.Add(varName);
-		}
-		else
-		{
-			// TODO: This is not unreachable exception
-			throw new UnreachableException($"Second initialization of variable: {varName}");
-		}
-		return null;
-	}
-
-	public override object? VisitExpressionAssignment(Assignment5Parser.ExpressionAssignmentContext context)
+	public override object? VisitVariableDeclaration(Assignment5Parser.VariableDeclarationContext context)
 	{
 		string varName = context.IDENT().GetText();
 		int value = _intVisitor.Visit(context.expression());
 
-		_variableValues[varName] = value;
+		LocalVariableContext[varName] = value;
 		return null;
-	}
-
-	public override object? VisitFunctionAssignment(Assignment5Parser.FunctionAssignmentContext context)
-	{
-		string varName = context.IDENT().GetText();
-		var value = Visit(context.functionCall());
-
-		if ( value is int intValue )
-		{
-			_variableValues[varName] = intValue;
-		}
-		return null;
-	}
-
-	public override object VisitDefaultParam(Assignment5Parser.DefaultParamContext context)
-	{
-		return new FunParam
-		{
-			Name = context.IDENT().GetText(), 
-			Value = _intVisitor.Visit(context.expression())
-		};
-	}
-
-	public override object VisitParam(Assignment5Parser.ParamContext context)
-	{
-		return new FunParam
-		{
-			Name = context.IDENT().GetText()
-		};
 	}
 
 	public override object? VisitFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
-		string functionName = context.functionName().GetText();
-		_declaredFunctions[functionName] = new List<Tuple<string, int?>>();
-		_functionsContexts[functionName] = context.statementBlock();
+		string functionName = context.IDENT().GetText();
+		var parameters = context.functionParameters()._params.Select(token => token.Text).ToList();
+		var body = context.statementBlock();
 
-		var paramsCount = context.functionParams().Length;
-
-		for ( int i = 0; i < paramsCount; i++ )
-		{
-			FunParam? funParam = (FunParam?) Visit(context.functionParams(i));
-			if ( funParam is not null )
-				_declaredFunctions[functionName].Add(new Tuple<string, int?>(funParam.Name, funParam.Value));
-		}
-
-		Console.WriteLine(string.Join(",", _declaredFunctions[functionName]));
+		_functionDeclarations[functionName] = new FunctionDeclaration(functionName, parameters, body);
 		return null;
 	}
 
 	public override object? VisitFunctionCall(Assignment5Parser.FunctionCallContext context)
 	{
-		var keyword = context.functionName().Start;
-		switch ( keyword.Type )
+		var functionName = context.IDENT().GetText();
+		var arguments = context.functionArguments().expression();
+		switch ( functionName )
 		{
-			case Assignment5Parser.KW_PRINT:
-				HandlePrintFunction(context.expression());
+			case "print":
+				HandlePrintFunction(arguments);
 				break;
-			case Assignment5Parser.IDENT:
-				_functionsVariables = HandleUserFunction(context.functionName().IDENT().GetText(), context.expression());
-				// this.Visit(_functionsContexts[context.functionName().IDENT().GetText()]);
-				var value = HelperVisitor(_functionsContexts[context.functionName().IDENT().GetText()], _functionsVariables);
-				_functionsVariables.Clear();
-				return value;
 			default:
-				throw new UnreachableException($"Unknown keyword: {keyword.Text}");
+				HandleUserFunction(functionName, arguments);
+				break;
 		}
 		return null;
 	}
@@ -234,11 +145,11 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	public override object? VisitReturnStatement(Assignment5Parser.ReturnStatementContext context)
 	{
-		int? value = null;
+		_returnValue = null;
 		if ( context.expression() is not null )
 		{
-			value = _intVisitor.Visit(context.expression());
+			_returnValue = _intVisitor.Visit(context.expression());
 		}
-		return value;
+		return null;
 	}
 }

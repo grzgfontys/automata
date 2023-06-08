@@ -1,20 +1,34 @@
-// using Grammar.Assignment5;
+using Grammar.Assignment5;
 using static System.Math;
 
 namespace Automata.Parsing.Assignment5;
 
 public class IntegralExpressionVisitor : Assignment5BaseVisitor<int>
 {
-	private readonly IDictionary<string, int> _variableValues;
+	private readonly Func<IDictionary<string, int>> variableValuesProvider;
 
-	public IntegralExpressionVisitor(IDictionary<string, int> variableValues)
+	private readonly Func<int> GetReturnValue;
+	private IDictionary<string, int> VariableValues => variableValuesProvider();
+	private readonly Assignment5CustomVisitor _statementVisitor;
+
+	public IntegralExpressionVisitor(Func<IDictionary<string, int>> variableValuesProvider,
+	                                 Func<int> getReturnValue,
+	                                 Assignment5CustomVisitor statementVisitor)
 	{
-		_variableValues = variableValues;
+		this.variableValuesProvider = variableValuesProvider;
+		GetReturnValue = getReturnValue;
+		this._statementVisitor = statementVisitor;
 	}
 
 	public override int VisitLiteral(Assignment5Parser.LiteralContext context) => int.Parse(context.GetText());
 
-	public override int VisitNestedVar(Assignment5Parser.NestedVarContext context) => _variableValues[context.IDENT().GetText()];
+	public override int VisitFunctionCall(Assignment5Parser.FunctionCallContext context)
+	{
+		_statementVisitor.VisitFunctionCall(context);
+		return GetReturnValue();
+	}
+
+	public override int VisitNestedVar(Assignment5Parser.NestedVarContext context) => VariableValues[context.IDENT().GetText()];
 
 	public override int VisitFactorial(Assignment5Parser.FactorialContext context) => Factorial(Visit(context.expression()));
 

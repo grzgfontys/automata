@@ -7,6 +7,7 @@ using Automata.Parsing.Math;
 using Grammar.Assignment2;
 using Grammar.Assignment3;
 using Grammar.Assignment4;
+using Grammar.Assignment5;
 
 namespace Automata;
 
@@ -80,7 +81,7 @@ public static class Program
 
 	public static void Main(string[] args)
 	{
-		string input = File.ReadAllText(@"input/assignment5.txt");
+		string input = File.ReadAllText(@"input/assignment5_2.txt");
 		Console.WriteLine("---------input---------");
 		Console.WriteLine(input);
 		Console.WriteLine("-----------------------");
