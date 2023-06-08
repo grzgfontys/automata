@@ -1,9 +1,7 @@
-﻿grammar Assignment5;
+grammar Assignment5;
 
 statements    
-    : (NEWLINE* statement)* NEWLINE* returnStatement*
-    | NEWLINE*
-    | EOF
+    : statement*
     ;
     
 statement
@@ -12,19 +10,24 @@ statement
 //    | returnStatement
     | ifStatement
     | whileStatement                             
-    | variableAssignment
+    | variableDeclaration
     ;
     
 functionDeclaration
-    : 'function' functionName expression (',' expression)* statementBlock
+    : 'function' functionName (functionParams ','?)* statementBlock
     ;  
+    
+functionParams
+    : IDENT '=' expression              # DefaultParam
+    | IDENT                             # Param
+    ;
       
 functionCall
-    : functionName '(' (expression ','?)+ ')'
+    : functionName '(' (expression ','?)* ')'
     ;
     
 ifStatement
-    : 'if' booleanExpression statementBlock NEWLINE? elseBlock?
+    : 'if' booleanExpression statementBlock elseBlock?
     ;
     
 elseBlock
@@ -36,17 +39,18 @@ whileStatement
     ;
 
 statementBlock
-//    : '{' NEWLINE statements returnStatement? NEWLINE '}'
-    : '{' NEWLINE statements returnStatement? NEWLINE '}'
-    | '{' NEWLINE? '}' // empty
+    : '{' statement* (returnStatement | statement)* '}'
+//    | '{' statement* (returnStatement | statement?)* '}'
     ;
     
 returnStatement
     : 'return' expression?
     ;
 
-variableAssignment
-    : IDENT '=' expression           
+variableDeclaration
+    : IDENT '=' expression              # ExpressionAssignment
+    | IDENT '=' functionCall            # FunctionAssignment
+    | IDENT                             # Initialisation
     ;
     
 booleanExpression
@@ -77,8 +81,8 @@ KW_PRINT        : 'print';
 COMP_OPERATOR   : '>' | '>=' | '<' | '<=' | '==' | '!=' ;
 NUMBER          : NONZERO_DIGIT DIGIT* | ZERO;
 IDENT           : LETTER (LETTER | DIGIT)*;
-NEWLINE         : '\r'? '\n';
-WHITESPACE      : [ \t]+ -> skip;
+//NEWLINE         : '\r'? '\n';
+WHITESPACE      : [ \t\n\r]+ -> skip;
 
 fragment NONZERO_DIGIT  : [1-9];
 fragment ZERO           : '0';

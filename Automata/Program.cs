@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Automata.Parsing.Assignment3;
+using Automata.Parsing.Assignment5;
 using Automata.Parsing.Calculator;
 using Automata.Parsing.Math;
 using Grammar.Assignment2;
@@ -64,16 +65,28 @@ public static class Program
 		var calculator = new  Calculator();
 		calculator.Visit(tree);
 	}
+	
+	private static void Assignment5(string input)
+	{
+		AntlrInputStream stream = new( input );
+		ITokenSource lexer = new Assignment5Lexer( stream );
+		CommonTokenStream tokens = new( lexer );
+		Assignment5Parser parser = new( tokens );
+		IParseTree tree = parser.statements();
+		
+		var visitor = new  Assignment5CustomVisitor();
+		visitor.Visit(tree);
+	}
 
 	public static void Main(string[] args)
 	{
-		string input = File.ReadAllText(@"input/assignment4.txt");
+		string input = File.ReadAllText(@"input/assignment5.txt");
 		Console.WriteLine("---------input---------");
 		Console.WriteLine(input);
 		Console.WriteLine("-----------------------");
 
 		Console.WriteLine("##########_ANTLR output_##########");
-		Assignment4(input);
+		Assignment5(input);
 		Console.WriteLine("##################################");
 	}
 }
