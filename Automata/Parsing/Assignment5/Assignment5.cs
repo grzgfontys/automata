@@ -1,4 +1,5 @@
-﻿using Grammar.Assignment5;
+﻿using Antlr4.Runtime.Tree;
+using Grammar.Assignment5;
 
 namespace Automata.Parsing.Assignment5;
 
@@ -70,10 +71,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		}
 	}
 
-	public override object? VisitStatement(Assignment5Parser.StatementContext context)
-	{
-		return _isReturning ? null : base.VisitStatement(context);
-	}
+	protected override bool ShouldVisitNextChild(IRuleNode node, object? currentResult) => !_isReturning;
 
 	private void HandleUserFunction(string funName,
 	                                IEnumerable<Assignment5Parser.ExpressionContext> expressions)
