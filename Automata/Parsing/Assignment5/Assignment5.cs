@@ -7,6 +7,8 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	private readonly Stack<IDictionary<string, int>> _variableContexts = new();
 	private IDictionary<string, int> LocalVariableContext => _variableContexts.Peek();
 
+	private bool _isReturning = false;
+
 	// ReSharper disable once NotAccessedPositionalProperty.Local
 	private record FunctionDeclaration(string Name,
 	                                   IReadOnlyList<string> Parameters,
@@ -68,6 +70,11 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		}
 	}
 
+	public override object? VisitStatement(Assignment5Parser.StatementContext context)
+	{
+		return _isReturning ? null : base.VisitStatement(context);
+	}
+
 	private void HandleUserFunction(string funName,
 	                                IEnumerable<Assignment5Parser.ExpressionContext> expressions)
 	{
@@ -126,6 +133,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 				HandleUserFunction(functionName, arguments);
 				break;
 		}
+		_isReturning = false;
 		return null;
 	}
 
@@ -133,10 +141,6 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	{
 		foreach ( var statement in context.statement() )
 		{
-			if ( statement.returnStatement() is not null )
-			{
-				return Visit(statement);
-			}
 			Visit(statement);
 		}
 		return null;
@@ -149,6 +153,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		{
 			_returnValue = _intVisitor.Visit(context.expression());
 		}
+		_isReturning = true;
 		return null;
 	}
 }
