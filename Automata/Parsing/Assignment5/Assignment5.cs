@@ -137,15 +137,6 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		return null;
 	}
 
-	public override object? VisitStatementBlock(Assignment5Parser.StatementBlockContext context)
-	{
-		foreach ( var statement in context.statement() )
-		{
-			Visit(statement);
-		}
-		return null;
-	}
-
 	public override object? VisitReturnStatement(Assignment5Parser.ReturnStatementContext context)
 	{
 		_returnValue = null;
