@@ -1,5 +1,6 @@
-﻿using Antlr4.Runtime.Tree;
-using Grammar.Assignment5;
+﻿using System.Diagnostics;
+using Antlr4.Runtime.Tree;
+// using Grammar.Assignment5;
 
 namespace Automata.Parsing.Assignment5;
 
@@ -72,17 +73,34 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 			throw new KeyNotFoundException($"Function {funName} not defined when called");
 		}
 		var arguments = expressions.ToList();
-		if ( functionDeclaration.ArgumentCount != arguments.Count )
+		if ( functionDeclaration.ArgumentCount < arguments.Count )
 		{
 			throw new
 				Exception($"Function {funName} expects {functionDeclaration.ArgumentCount} arguments, but {arguments.Count} were given");
 		}
 		Dictionary<string, int> newVariableContext = new();
-		for ( var i = 0; i < arguments.Count; i++ )
+		int i = 0;
+		while (i < arguments.Count)
 		{
-			string varName = functionDeclaration.Parameters[i];
+			string varName = functionDeclaration.Parameters[i].Item1;
 			int value = _intVisitor.Visit(arguments[i]);
 			newVariableContext[varName] = value;
+			i++;
+		}
+		while (i < functionDeclaration.ArgumentCount)
+		{
+			if (functionDeclaration.Parameters[i].Item2.HasValue )
+			{
+				string varName = functionDeclaration.Parameters[i].Item1;
+				int value = functionDeclaration.Parameters[i].Item2.Value;
+				newVariableContext[varName] = value;
+			}
+			else
+			{
+				throw new
+					Exception($"Function {funName} expects argument {functionDeclaration.Parameters[i].Item1}, but it was not provided");
+			}
+			i++;
 		}
 
 		_variableContexts.Push(newVariableContext);
@@ -102,10 +120,37 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	public override object? VisitFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
 		string functionName = context.IDENT().GetText();
-		var parameters = context.functionParameters()._params.Select(token => token.Text).ToList();
+		var declaredParameters = context.functionParameters().functionParameter();
+		List<Tuple<string, int?>> parameters = new List<Tuple<string, int?>>();
+		string parameterName;
+		int parameterValue;
+		foreach (var parameter in declaredParameters)
+		{
+			if (parameter.GetType() == typeof(Assignment5Parser.MandatoryParameterContext))
+			{
+				parameterName = ((Assignment5Parser.MandatoryParameterContext)parameter).IDENT().GetText();
+				parameters.Add(new Tuple<string, int?>(parameterName, null));
+			}
+			else if(parameter.GetType() == typeof(Assignment5Parser.DefaultParameterContext))
+			{
+				parameterName = ((Assignment5Parser.DefaultParameterContext)parameter).IDENT().GetText();
+				parameterValue = int.Parse(((Assignment5Parser.DefaultParameterContext)parameter).NUMBER().GetText());
+				parameters.Add(new Tuple<string, int?>(parameterName, parameterValue));
+			}
+			else
+			{
+				throw new UnreachableException($"Declaration of function {functionName} has unhandled parameter");
+			}
+		}
 		var body = context.statementBlock();
 
 		_functionsManager.functionDeclarations[functionName] = new FunctionsManager.FunctionDeclaration(functionName, parameters, body);
+		return null;
+	}
+
+	public override object? VisitMandatoryParameter(Assignment5Parser.MandatoryParameterContext context)
+	{
+		var name = context.IDENT();
 		return null;
 	}
 

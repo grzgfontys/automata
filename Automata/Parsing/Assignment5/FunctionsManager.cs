@@ -1,4 +1,4 @@
-﻿using Grammar.Assignment5;
+﻿// using Grammar.Assignment5;
 
 
 namespace Automata.Parsing.Assignment5;
@@ -7,7 +7,7 @@ public class FunctionsManager
 {
     // ReSharper disable once NotAccessedPositionalProperty.Local
     public record FunctionDeclaration(string Name,
-        IReadOnlyList<string> Parameters,
+        IReadOnlyList<Tuple<string, int?>> Parameters,
         Assignment5Parser.StatementBlockContext Body)
     {
         public int ArgumentCount => Parameters.Count;
