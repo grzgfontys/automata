@@ -71,29 +71,25 @@ public interface IAssignment5Listener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionParameters([NotNull] Assignment5Parser.FunctionParametersContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>MandatoryParameter</c>
-	/// labeled alternative in <see cref="Assignment5Parser.functionParameter"/>.
+	/// Enter a parse tree produced by <see cref="Assignment5Parser.mandatoryFunctionParameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMandatoryParameter([NotNull] Assignment5Parser.MandatoryParameterContext context);
+	void EnterMandatoryFunctionParameter([NotNull] Assignment5Parser.MandatoryFunctionParameterContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>MandatoryParameter</c>
-	/// labeled alternative in <see cref="Assignment5Parser.functionParameter"/>.
+	/// Exit a parse tree produced by <see cref="Assignment5Parser.mandatoryFunctionParameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMandatoryParameter([NotNull] Assignment5Parser.MandatoryParameterContext context);
+	void ExitMandatoryFunctionParameter([NotNull] Assignment5Parser.MandatoryFunctionParameterContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>DefaultParameter</c>
-	/// labeled alternative in <see cref="Assignment5Parser.functionParameter"/>.
+	/// Enter a parse tree produced by <see cref="Assignment5Parser.defaultFunctionParameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterDefaultParameter([NotNull] Assignment5Parser.DefaultParameterContext context);
+	void EnterDefaultFunctionParameter([NotNull] Assignment5Parser.DefaultFunctionParameterContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>DefaultParameter</c>
-	/// labeled alternative in <see cref="Assignment5Parser.functionParameter"/>.
+	/// Exit a parse tree produced by <see cref="Assignment5Parser.defaultFunctionParameter"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitDefaultParameter([NotNull] Assignment5Parser.DefaultParameterContext context);
+	void ExitDefaultFunctionParameter([NotNull] Assignment5Parser.DefaultFunctionParameterContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="Assignment5Parser.functionCall"/>.
 	/// </summary>

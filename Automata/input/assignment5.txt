@@ -1,7 +1,49 @@
-function double(x, b = 2, c = 3) {
-    print(x+b+c)
+function double(x) {
+    print(x)
     return 2*x
     return 69
 }
 
-double(1)
+function fib(n) {
+    if n == 1 or n == 0 {
+        return 1
+    }
+    return fib(n-1) + fib(n-2)
+}
+
+print(fib(1))
+print(fib(2))
+print(fib(3))
+print(fib(4))
+print(fib(5))
+print(fib(6))
+print(fib(7))
+print(fib(8))
+print(fib(9))
+print(fib(10))
+
+x = 4
+y = 2
+z = double(x) + double(y)
+print(x)
+print(y)
+print(z)
+
+function mandatoryParams(x) {
+    print(x)
+}
+
+mandatoryParams(1)
+
+function multipleParams(x, a=2) {
+    print(x+a)
+}
+
+multipleParams(1)
+
+function defaultParams(a=2) {
+    print(a)
+}
+
+defaultParams()
+defaultParams(3)

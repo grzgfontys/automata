@@ -120,37 +120,25 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	public override object? VisitFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
 		string functionName = context.IDENT().GetText();
-		var declaredParameters = context.functionParameters().functionParameter();
+		var mandatoryParameters = context.functionParameters().mandatoryFunctionParameter();
+		var defaultParameters = context.functionParameters().defaultFunctionParameter();
 		List<Tuple<string, int?>> parameters = new List<Tuple<string, int?>>();
 		string parameterName;
 		int parameterValue;
-		foreach (var parameter in declaredParameters)
+		foreach (var mandatoryParameter in mandatoryParameters)
 		{
-			if (parameter.GetType() == typeof(Assignment5Parser.MandatoryParameterContext))
-			{
-				parameterName = ((Assignment5Parser.MandatoryParameterContext)parameter).IDENT().GetText();
-				parameters.Add(new Tuple<string, int?>(parameterName, null));
-			}
-			else if(parameter.GetType() == typeof(Assignment5Parser.DefaultParameterContext))
-			{
-				parameterName = ((Assignment5Parser.DefaultParameterContext)parameter).IDENT().GetText();
-				parameterValue = int.Parse(((Assignment5Parser.DefaultParameterContext)parameter).NUMBER().GetText());
-				parameters.Add(new Tuple<string, int?>(parameterName, parameterValue));
-			}
-			else
-			{
-				throw new UnreachableException($"Declaration of function {functionName} has unhandled parameter");
-			}
+			parameterName = mandatoryParameter.IDENT().GetText();
+			parameters.Add(new Tuple<string, int?>(parameterName, null));
+		}
+		foreach (var defaultParameter in defaultParameters)
+		{
+			parameterName = defaultParameter.IDENT().GetText();
+			parameterValue = int.Parse(defaultParameter.NUMBER().GetText());
+			parameters.Add(new Tuple<string, int?>(parameterName, parameterValue));
 		}
 		var body = context.statementBlock();
 
 		_functionsManager.functionDeclarations[functionName] = new FunctionsManager.FunctionDeclaration(functionName, parameters, body);
-		return null;
-	}
-
-	public override object? VisitMandatoryParameter(Assignment5Parser.MandatoryParameterContext context)
-	{
-		var name = context.IDENT();
 		return null;
 	}
 

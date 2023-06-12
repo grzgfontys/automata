@@ -18,14 +18,22 @@ functionDeclaration
     ;
 
 functionParameters
-    : '(' (functionParameter (',' functionParameter)* )? ')'
+    : '(' (mandatoryFunctionParameter (',' mandatoryFunctionParameter)* )? (',' defaultFunctionParameter (',' defaultFunctionParameter)* )? ')'
+    | '(' (mandatoryFunctionParameter (',' mandatoryFunctionParameter)* )? ')'
+    | '(' (defaultFunctionParameter (',' defaultFunctionParameter)* )? ')'
     ;
 
-functionParameter
-    : IDENT                     # MandatoryParameter
-    | IDENT '=' NUMBER          # DefaultParameter
-//    | IDENT '?'                 # OptionalParameter
+mandatoryFunctionParameter
+    : IDENT
     ;
+    
+defaultFunctionParameter
+    : IDENT '=' NUMBER
+    ;
+    
+//optionalFunctionParameter
+//    : IDENT '?'
+//    ;
       
 functionCall
     : IDENT functionArguments

@@ -75,8 +75,7 @@ public partial class Assignment5BaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// <return>The visitor result.</return>
 	public virtual Result VisitFunctionParameters([NotNull] Assignment5Parser.FunctionParametersContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>MandatoryParameter</c>
-	/// labeled alternative in <see cref="Assignment5Parser.functionParameter"/>.
+	/// Visit a parse tree produced by <see cref="Assignment5Parser.mandatoryFunctionParameter"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -84,10 +83,9 @@ public partial class Assignment5BaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitMandatoryParameter([NotNull] Assignment5Parser.MandatoryParameterContext context) { return VisitChildren(context); }
+	public virtual Result VisitMandatoryFunctionParameter([NotNull] Assignment5Parser.MandatoryFunctionParameterContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>DefaultParameter</c>
-	/// labeled alternative in <see cref="Assignment5Parser.functionParameter"/>.
+	/// Visit a parse tree produced by <see cref="Assignment5Parser.defaultFunctionParameter"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -95,7 +93,7 @@ public partial class Assignment5BaseVisitor<Result> : AbstractParseTreeVisitor<R
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDefaultParameter([NotNull] Assignment5Parser.DefaultParameterContext context) { return VisitChildren(context); }
+	public virtual Result VisitDefaultFunctionParameter([NotNull] Assignment5Parser.DefaultFunctionParameterContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="Assignment5Parser.functionCall"/>.
 	/// <para>
