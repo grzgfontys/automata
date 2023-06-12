@@ -10,19 +10,9 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	private bool _isReturning = false;
 
-	// ReSharper disable once NotAccessedPositionalProperty.Local
-	private record FunctionDeclaration(string Name,
-	                                   IReadOnlyList<string> Parameters,
-	                                   Assignment5Parser.StatementBlockContext Body)
-	{
-		public int ArgumentCount => Parameters.Count;
-	}
-
-	private readonly IDictionary<string, FunctionDeclaration> _functionDeclarations =
-		new Dictionary<string, FunctionDeclaration>();
-
 	private readonly IAssignment5Visitor<int> _intVisitor;
 	private readonly IAssignment5Visitor<bool> _boolVisitor;
+	private readonly FunctionsManager _functionsManager;
 	private int? _returnValue;
 	private int ReturnValue => _returnValue
 	                           ?? throw new
@@ -32,6 +22,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	{
 		_intVisitor = new IntegralExpressionVisitor(() => LocalVariableContext, () => ReturnValue, this);
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
+		_functionsManager = new();
 
 		_variableContexts.Push(new Dictionary<string, int>());
 	}
@@ -76,7 +67,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	private void HandleUserFunction(string funName,
 	                                IEnumerable<Assignment5Parser.ExpressionContext> expressions)
 	{
-		if ( !_functionDeclarations.TryGetValue(funName, out var functionDeclaration) )
+		if ( !_functionsManager.functionDeclarations.TryGetValue(funName, out var functionDeclaration) )
 		{
 			throw new KeyNotFoundException($"Function {funName} not defined when called");
 		}
@@ -114,7 +105,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		var parameters = context.functionParameters()._params.Select(token => token.Text).ToList();
 		var body = context.statementBlock();
 
-		_functionDeclarations[functionName] = new FunctionDeclaration(functionName, parameters, body);
+		_functionsManager.functionDeclarations[functionName] = new FunctionsManager.FunctionDeclaration(functionName, parameters, body);
 		return null;
 	}
 
