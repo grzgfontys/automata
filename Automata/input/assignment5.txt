@@ -1,36 +1,30 @@
-aa = 4
-bb
-print(aa, aa)
-
-function test aa, aaa, cc = 10{}
-
-
-function iloraz bb, cc = 15{
-    print(bb*cc)
-    return bb-cc
-    print(777)
+function double(x, b = 2, c = 3) {
+    print(x)
+    return 2*x
+    return 69
 }
 
-aa = iloraz(10)
-print(aa)
-
-test(aa, 2+2)
-
-n = 10
-
-a = 0
-b = 1
-if n == 0 {
-    print(0)
-} else {
-    i = 2
-    while i <= n {
-        next = a + b
-        a = b
-        b = next
-        i = i + 1
-        print(b)
-        iloraz(3, 5)
+function fib(n) {
+    if n == 1 or n == 0 {
+        return 1
     }
-    print(b)
+    return fib(n-1) + fib(n-2)
 }
+
+print(fib(1))
+print(fib(2))
+print(fib(3))
+print(fib(4))
+print(fib(5))
+print(fib(6))
+print(fib(7))
+print(fib(8))
+print(fib(9))
+print(fib(10))
+
+x = 4
+y = 2
+z = double(x) + double(y)
+print(x)
+print(y)
+print(z)
