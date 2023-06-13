@@ -72,6 +72,36 @@ public interface IAssignment5Listener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionParameters([NotNull] Assignment5Parser.FunctionParametersContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="Assignment5Parser.requiredParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRequiredParameterList([NotNull] Assignment5Parser.RequiredParameterListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="Assignment5Parser.requiredParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRequiredParameterList([NotNull] Assignment5Parser.RequiredParameterListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="Assignment5Parser.optionalParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOptionalParameterList([NotNull] Assignment5Parser.OptionalParameterListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="Assignment5Parser.optionalParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOptionalParameterList([NotNull] Assignment5Parser.OptionalParameterListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="Assignment5Parser.parameterWithDefaultValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParameterWithDefaultValue([NotNull] Assignment5Parser.ParameterWithDefaultValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="Assignment5Parser.parameterWithDefaultValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParameterWithDefaultValue([NotNull] Assignment5Parser.ParameterWithDefaultValueContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="Assignment5Parser.functionCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

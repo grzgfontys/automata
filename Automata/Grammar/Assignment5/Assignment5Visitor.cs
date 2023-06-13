@@ -57,6 +57,24 @@ public interface IAssignment5Visitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunctionParameters([NotNull] Assignment5Parser.FunctionParametersContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="Assignment5Parser.requiredParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRequiredParameterList([NotNull] Assignment5Parser.RequiredParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="Assignment5Parser.optionalParameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOptionalParameterList([NotNull] Assignment5Parser.OptionalParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="Assignment5Parser.parameterWithDefaultValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameterWithDefaultValue([NotNull] Assignment5Parser.ParameterWithDefaultValueContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="Assignment5Parser.functionCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
