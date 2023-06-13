@@ -14,7 +14,7 @@ public class FunctionManager
 	                                   IReadOnlyList<ParameterDefinition> Parameters,
 	                                   BlockContext Body);
 
-	public readonly record struct ParameterDefinition
+	private readonly record struct ParameterDefinition
 	{
 		public required string Name { get; init; }
 		public int? DefaultValue { get; init; }
@@ -22,10 +22,38 @@ public class FunctionManager
 	}
 
 
+	private class ParametersVisitor : Assignment5BaseVisitor<IEnumerable<ParameterDefinition>>
+	{
+		protected override IEnumerable<ParameterDefinition> DefaultResult => Enumerable.Empty<ParameterDefinition>();
+
+		protected override IEnumerable<ParameterDefinition> AggregateResult(IEnumerable<ParameterDefinition> aggregate,
+		                                                                    IEnumerable<ParameterDefinition> nextResult) =>
+			aggregate.Concat(nextResult);
+
+		public override IEnumerable<ParameterDefinition> VisitRequiredParameterList(
+			Assignment5Parser.RequiredParameterListContext context)
+		{
+			return context._parameters.Select(parameter => new ParameterDefinition {Name = parameter.Text});
+		}
+
+		public override IEnumerable<ParameterDefinition> VisitOptionalParameterList(
+			Assignment5Parser.OptionalParameterListContext context)
+		{
+			return context._parameters.Select(parameter => new ParameterDefinition
+			{
+				Name = parameter.IDENT().GetText(),
+				DefaultValue = int.Parse(parameter.NUMBER().GetText())
+			});
+		}
+
+	}
+
 	private readonly IDictionary<string, FunctionDeclaration> _functionDeclarations =
 		new Dictionary<string, FunctionDeclaration>();
 
 	private readonly IVariableManager _variableManager;
+
+	private readonly ParametersVisitor _parametersVisitor = new();
 
 	public FunctionManager(IVariableManager variableManager)
 	{
@@ -40,9 +68,12 @@ public class FunctionManager
 	/// <summary>
 	/// Registers a given function
 	/// </summary>
-	public void AddFunctionDeclaration(string name, IEnumerable<ParameterDefinition> parameters, BlockContext block)
+	public void AddFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
-		_functionDeclarations.Add(name, new FunctionDeclaration(name, parameters.ToList(), block));
+		string name = context.IDENT().GetText();
+		var parameters = _parametersVisitor.Visit(context.functionParameters()).ToList();
+		var body = context.statementBlock();
+		_functionDeclarations.Add(name, new FunctionDeclaration(name, parameters, body));
 	}
 
 
@@ -79,7 +110,7 @@ public class FunctionManager
 		for ( var i = 0; i < functionDeclaration.Parameters.Count; i++ )
 		{
 			var parameter = functionDeclaration.Parameters[i];
-			if ( arguments.Count < i ) // argument is provided by the caller
+			if ( arguments.Count > i ) // argument is provided by the caller
 			{
 				newVariableContext[parameter.Name] = arguments[i];
 			}

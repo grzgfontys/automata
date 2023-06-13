@@ -3,8 +3,6 @@ using Grammar.Assignment5;
 
 namespace Automata.Parsing.Assignment5;
 
-using ParameterDefinition = FunctionManager.ParameterDefinition;
-
 public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nullable object because we do not return any value
 {
 	private bool _isReturning;
@@ -64,13 +62,6 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	protected override bool ShouldVisitNextChild(IRuleNode node, object? currentResult) => !_isReturning;
 
-	private void HandleUserDefinedFunction(string functionName,
-	                                       IEnumerable<Assignment5Parser.ExpressionContext> expressions)
-	{
-		var arguments = expressions.Select(_intVisitor.Visit).ToList();
-		_functionManager.InvokeFunction(functionName, arguments);
-	}
-
 	public override object? VisitVariableDeclaration(Assignment5Parser.VariableDeclarationContext context)
 	{
 		string varName = context.IDENT().GetText();
@@ -82,12 +73,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	public override object? VisitFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
-		string functionName = context.IDENT().GetText();
-		var parameters = from token in context.functionParameters()._params
-		                 select new ParameterDefinition {Name = token.Text};
-		var body = context.statementBlock();
-
-		_functionManager.AddFunctionDeclaration(functionName, parameters, body);
+		_functionManager.AddFunctionDeclaration(context);
 		return null;
 	}
 
@@ -101,7 +87,8 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 				HandlePrintFunction(arguments);
 				break;
 			default:
-				HandleUserDefinedFunction(functionName, arguments);
+				var arguments1 = arguments.Select(_intVisitor.Visit).ToList();
+				_functionManager.InvokeFunction(functionName, arguments1);
 				break;
 		}
 		_isReturning = false;

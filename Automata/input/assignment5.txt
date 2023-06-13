@@ -11,6 +11,11 @@ function fib(n) {
     return fib(n-1) + fib(n-2)
 }
 
+function default(a, b = 69) {
+    print(a)
+    print(b)
+}
+
 print(fib(1))
 print(fib(2))
 print(fib(3))
@@ -28,3 +33,8 @@ z = double(x) + double(y)
 print(x)
 print(y)
 print(z)
+
+print(111111111)
+
+default(1)
+default(6,420)
