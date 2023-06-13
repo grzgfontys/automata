@@ -5,15 +5,13 @@ namespace Automata.Parsing.Assignment5;
 
 public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nullable object because we do not return any value
 {
-	private readonly Stack<IDictionary<string, int>> _variableContexts = new();
-	private IDictionary<string, int> LocalVariableContext => _variableContexts.Peek();
-
-	private bool _isReturning = false;
+	private bool _isReturning;
 
 	private readonly IAssignment5Visitor<int> _intVisitor;
 	private readonly IAssignment5Visitor<bool> _boolVisitor;
 	private int? _returnValue;
 	private readonly FunctionManager _functionManager;
+	private readonly IVariableManager _variableManager;
 	private int ReturnValue => _returnValue
 	                           ?? throw new
 		                           InvalidOperationException("It is not allowed to access the return value when it was not set");
@@ -21,11 +19,10 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	public Assignment5CustomVisitor()
 	{
-		_intVisitor = new IntegralExpressionVisitor(() => LocalVariableContext, () => ReturnValue, this);
+		_variableManager = new VariableManager();
+		_functionManager = new FunctionManager(_variableManager) {BlockExecutor = block => VisitStatementBlock(block)};
+		_intVisitor = new IntegralExpressionVisitor(_variableManager, () => ReturnValue, this);
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
-
-		_variableContexts.Push(new Dictionary<string, int>());
-		_functionManager = new FunctionManager(_variableContexts) {BlockExecutor = block => this.VisitStatementBlock(block)};
 	}
 
 	public override object? VisitIfStatement(Assignment5Parser.IfStatementContext context)
@@ -77,7 +74,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		string varName = context.IDENT().GetText();
 		int value = _intVisitor.Visit(context.expression());
 
-		LocalVariableContext[varName] = value;
+		_variableManager[varName] = value;
 		return null;
 	}
 

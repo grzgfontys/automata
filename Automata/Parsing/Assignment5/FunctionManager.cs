@@ -21,11 +21,11 @@ public class FunctionManager
 	private readonly IDictionary<string, FunctionDeclaration> _functionDeclarations =
 		new Dictionary<string, FunctionDeclaration>();
 
-	private readonly Stack<IDictionary<string, int>> _variableContexts;
+	private readonly IVariableManager _variableManager;
 
-	public FunctionManager(Stack<IDictionary<string, int>> variableContexts)
+	public FunctionManager(IVariableManager variableManager)
 	{
-		_variableContexts = variableContexts;
+		_variableManager = variableManager;
 	}
 
 	/// <summary>
@@ -76,8 +76,8 @@ public class FunctionManager
 			newVariableContext[varName] = value;
 		}
 
-		_variableContexts.Push(newVariableContext);
+		_variableManager.PushContext(newVariableContext);
 		blockExecutor(functionDeclaration.Body);
-		_variableContexts.Pop();
+		_variableManager.PopContext();
 	}
 }

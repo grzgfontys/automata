@@ -5,19 +5,18 @@ namespace Automata.Parsing.Assignment5;
 
 public class IntegralExpressionVisitor : Assignment5BaseVisitor<int>
 {
-	private readonly Func<IDictionary<string, int>> variableValuesProvider;
 
+	private readonly IVariableManager _variableManager;
 	private readonly Func<int> GetReturnValue;
-	private IDictionary<string, int> VariableValues => variableValuesProvider();
 	private readonly Assignment5CustomVisitor _statementVisitor;
 
-	public IntegralExpressionVisitor(Func<IDictionary<string, int>> variableValuesProvider,
+	public IntegralExpressionVisitor(IVariableManager variableManager,
 	                                 Func<int> getReturnValue,
 	                                 Assignment5CustomVisitor statementVisitor)
 	{
-		this.variableValuesProvider = variableValuesProvider;
+		_variableManager = variableManager;
 		GetReturnValue = getReturnValue;
-		this._statementVisitor = statementVisitor;
+		_statementVisitor = statementVisitor;
 	}
 
 	public override int VisitLiteral(Assignment5Parser.LiteralContext context) => int.Parse(context.GetText());
@@ -28,7 +27,7 @@ public class IntegralExpressionVisitor : Assignment5BaseVisitor<int>
 		return GetReturnValue();
 	}
 
-	public override int VisitNestedVar(Assignment5Parser.NestedVarContext context) => VariableValues[context.IDENT().GetText()];
+	public override int VisitNestedVar(Assignment5Parser.NestedVarContext context) => _variableManager[context.IDENT().GetText()];
 
 	public override int VisitFactorial(Assignment5Parser.FactorialContext context) => Factorial(Visit(context.expression()));
 
