@@ -3,6 +3,8 @@ using Grammar.Assignment5;
 
 namespace Automata.Parsing.Assignment5;
 
+using ParameterDefinition = FunctionManager.ParameterDefinition;
+
 public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nullable object because we do not return any value
 {
 	private bool _isReturning;
@@ -81,7 +83,8 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	public override object? VisitFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
 		string functionName = context.IDENT().GetText();
-		var parameters = context.functionParameters()._params.Select(token => token.Text);
+		var parameters = from token in context.functionParameters()._params
+		                 select new ParameterDefinition {Name = token.Text};
 		var body = context.statementBlock();
 
 		_functionManager.AddFunctionDeclaration(functionName, parameters, body);

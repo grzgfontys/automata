@@ -11,10 +11,14 @@ public class FunctionManager
 {
 	// ReSharper disable once NotAccessedPositionalProperty.Local
 	private record FunctionDeclaration(string Name,
-	                                   IReadOnlyList<string> Parameters,
-	                                   BlockContext Body)
+	                                   IReadOnlyList<ParameterDefinition> Parameters,
+	                                   BlockContext Body);
+
+	public readonly record struct ParameterDefinition
 	{
-		public int ArgumentCount => Parameters.Count;
+		public required string Name { get; init; }
+		public int? DefaultValue { get; init; }
+		public bool IsRequired => !DefaultValue.HasValue;
 	}
 
 
@@ -36,7 +40,7 @@ public class FunctionManager
 	/// <summary>
 	/// Registers a given function
 	/// </summary>
-	public void AddFunctionDeclaration(string name, IEnumerable<string> parameters, BlockContext block)
+	public void AddFunctionDeclaration(string name, IEnumerable<ParameterDefinition> parameters, BlockContext block)
 	{
 		_functionDeclarations.Add(name, new FunctionDeclaration(name, parameters.ToList(), block));
 	}
@@ -63,17 +67,28 @@ public class FunctionManager
 		{
 			throw new KeyNotFoundException($"Function {name} not defined when called");
 		}
-		if ( functionDeclaration.ArgumentCount != arguments.Count )
+
+		int maxArgumentCount = functionDeclaration.Parameters.Count;
+		int minArgumentCount = functionDeclaration.Parameters.Count(x => x.IsRequired);
+		if ( arguments.Count > maxArgumentCount || arguments.Count < minArgumentCount )
 		{
 			throw new
-				Exception($"Function {name} expects {functionDeclaration.ArgumentCount} arguments, but {arguments.Count} were given");
+				Exception($"Function {name} expects between {minArgumentCount} and {maxArgumentCount} arguments, but {arguments.Count} were given");
 		}
 		Dictionary<string, int> newVariableContext = new();
-		for ( var i = 0; i < arguments.Count; i++ )
+		for ( var i = 0; i < functionDeclaration.Parameters.Count; i++ )
 		{
-			string varName = functionDeclaration.Parameters[i];
-			int value = arguments[i];
-			newVariableContext[varName] = value;
+			var parameter = functionDeclaration.Parameters[i];
+			if ( arguments.Count < i ) // argument is provided by the caller
+			{
+				newVariableContext[parameter.Name] = arguments[i];
+			}
+			else
+			{
+				// cannot be null, since we checked that the number of required parameters
+				// is not greater than the number of provided arguments
+				newVariableContext[parameter.Name] = parameter.DefaultValue!.Value;
+			}
 		}
 
 		_variableManager.PushContext(newVariableContext);
