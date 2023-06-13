@@ -12,13 +12,14 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	private int? _returnValue;
 	private readonly FunctionManager _functionManager;
 	private readonly IVariableManager _variableManager;
+	private readonly StreamWriter _outputStream;
 	private int ReturnValue => _returnValue
 	                           ?? throw new
 		                           InvalidOperationException("It is not allowed to access the return value when it was not set");
-
-
-	public Assignment5CustomVisitor()
+	
+	public Assignment5CustomVisitor(Stream outputStream)
 	{
+		_outputStream = new StreamWriter(outputStream);
 		_variableManager = new VariableManager();
 		_functionManager = new FunctionManager(_variableManager) {BlockExecutor = block => VisitStatementBlock(block)};
 		_intVisitor = new IntegralExpressionVisitor(_variableManager, () => ReturnValue, this);
@@ -56,7 +57,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	{
 		foreach ( var expression in expressions )
 		{
-			Console.WriteLine(_intVisitor.Visit(expression));
+			_outputStream.WriteLine(_intVisitor.Visit(expression));
 		}
 	}
 

@@ -54,28 +54,29 @@ public static class Program
 		Listener listener = new();
 		walker.Walk(listener, tree);
 	}
-	
+
 	private static void Assignment4(string input)
 	{
 		AntlrInputStream stream = new( input );
-		ITokenSource lexer = new CalculatorLexer( stream );
+		ITokenSource lexer = new CalculatorLexer(stream);
 		CommonTokenStream tokens = new( lexer );
 		CalculatorParser parser = new( tokens );
 		IParseTree tree = parser.statements();
-		
-		var calculator = new  Calculator();
+
+		var calculator = new Calculator();
 		calculator.Visit(tree);
 	}
-	
+
 	private static void Assignment5(string input)
 	{
 		AntlrInputStream stream = new( input );
-		ITokenSource lexer = new Assignment5Lexer( stream );
+		ITokenSource lexer = new Assignment5Lexer(stream);
 		CommonTokenStream tokens = new( lexer );
 		Assignment5Parser parser = new( tokens );
 		IParseTree tree = parser.statements();
-		
-		var visitor = new  Assignment5CustomVisitor();
+
+		using var stdOut = Console.OpenStandardOutput();
+		var visitor = new Assignment5CustomVisitor(stdOut);
 		visitor.Visit(tree);
 	}
 
