@@ -10,23 +10,14 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	private bool _isReturning = false;
 
-	// ReSharper disable once NotAccessedPositionalProperty.Local
-	private record FunctionDeclaration(string Name,
-	                                   IReadOnlyList<string> Parameters,
-	                                   Assignment5Parser.StatementBlockContext Body)
-	{
-		public int ArgumentCount => Parameters.Count;
-	}
-
-	private readonly IDictionary<string, FunctionDeclaration> _functionDeclarations =
-		new Dictionary<string, FunctionDeclaration>();
-
 	private readonly IAssignment5Visitor<int> _intVisitor;
 	private readonly IAssignment5Visitor<bool> _boolVisitor;
 	private int? _returnValue;
+	private readonly FunctionManager _functionManager;
 	private int ReturnValue => _returnValue
 	                           ?? throw new
 		                           InvalidOperationException("It is not allowed to access the return value when it was not set");
+
 
 	public Assignment5CustomVisitor()
 	{
@@ -34,6 +25,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		_boolVisitor = new BooleanExpressionVisitor(_intVisitor);
 
 		_variableContexts.Push(new Dictionary<string, int>());
+		_functionManager = new FunctionManager(_variableContexts) {BlockExecutor = block => this.VisitStatementBlock(block)};
 	}
 
 	public override object? VisitIfStatement(Assignment5Parser.IfStatementContext context)
@@ -73,30 +65,11 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 
 	protected override bool ShouldVisitNextChild(IRuleNode node, object? currentResult) => !_isReturning;
 
-	private void HandleUserFunction(string funName,
-	                                IEnumerable<Assignment5Parser.ExpressionContext> expressions)
+	private void HandleUserDefinedFunction(string functionName,
+	                                       IEnumerable<Assignment5Parser.ExpressionContext> expressions)
 	{
-		if ( !_functionDeclarations.TryGetValue(funName, out var functionDeclaration) )
-		{
-			throw new KeyNotFoundException($"Function {funName} not defined when called");
-		}
-		var arguments = expressions.ToList();
-		if ( functionDeclaration.ArgumentCount != arguments.Count )
-		{
-			throw new
-				Exception($"Function {funName} expects {functionDeclaration.ArgumentCount} arguments, but {arguments.Count} were given");
-		}
-		Dictionary<string, int> newVariableContext = new();
-		for ( var i = 0; i < arguments.Count; i++ )
-		{
-			string varName = functionDeclaration.Parameters[i];
-			int value = _intVisitor.Visit(arguments[i]);
-			newVariableContext[varName] = value;
-		}
-
-		_variableContexts.Push(newVariableContext);
-		Visit(functionDeclaration.Body);
-		_variableContexts.Pop();
+		var arguments = expressions.Select(_intVisitor.Visit).ToList();
+		_functionManager.InvokeFunction(functionName, arguments);
 	}
 
 	public override object? VisitVariableDeclaration(Assignment5Parser.VariableDeclarationContext context)
@@ -111,10 +84,10 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 	public override object? VisitFunctionDeclaration(Assignment5Parser.FunctionDeclarationContext context)
 	{
 		string functionName = context.IDENT().GetText();
-		var parameters = context.functionParameters()._params.Select(token => token.Text).ToList();
+		var parameters = context.functionParameters()._params.Select(token => token.Text);
 		var body = context.statementBlock();
 
-		_functionDeclarations[functionName] = new FunctionDeclaration(functionName, parameters, body);
+		_functionManager.AddFunctionDeclaration(functionName, parameters, body);
 		return null;
 	}
 
@@ -128,7 +101,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 				HandlePrintFunction(arguments);
 				break;
 			default:
-				HandleUserFunction(functionName, arguments);
+				HandleUserDefinedFunction(functionName, arguments);
 				break;
 		}
 		_isReturning = false;
