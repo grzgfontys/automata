@@ -18,7 +18,22 @@ functionDeclaration
     ;
 
 functionParameters
-    : '(' (params+=IDENT (',' params+=IDENT)* )? ')'
+    : '(' ')'
+    | '(' requiredParameterList ')'
+    | '(' optionalParameterList ')'
+    | '(' requiredParameterList ',' optionalParameterList ')'
+    ;
+    
+requiredParameterList
+    : parameters+=IDENT (',' parameters+=IDENT)*
+    ;
+    
+optionalParameterList
+    : parameters+=parameterWithDefaultValue (',' parameters+=parameterWithDefaultValue)*
+    ;
+    
+parameterWithDefaultValue
+    : IDENT '=' NUMBER
     ;
       
 functionCall
