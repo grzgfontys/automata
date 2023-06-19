@@ -59,6 +59,7 @@ public class Assignment5CustomVisitor : Assignment5BaseVisitor<object?> // nulla
 		{
 			_outputStream.WriteLine(_intVisitor.Visit(expression));
 		}
+		_outputStream.Flush();
 	}
 
 	protected override bool ShouldVisitNextChild(IRuleNode node, object? currentResult) => !_isReturning;
